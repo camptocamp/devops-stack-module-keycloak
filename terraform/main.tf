@@ -30,6 +30,25 @@ resource "argocd_project" "this" {
   }
 }
 
+data "utils_deep_merge_yaml" "values" {
+  input = [
+    templatefile("${path.module}/profiles/default.yaml", {
+      oidc           = var.oidc,
+      base_domain    = var.base_domain,
+      cluster_issuer = var.cluster_issuer,
+      argocd         = var.argocd,
+      keycloak       = local.keycloak,
+    }),
+    templatefile("${path.module}/profiles/${var.profile}.yaml", {
+      oidc           = var.oidc,
+      base_domain    = var.base_domain,
+      cluster_issuer = var.cluster_issuer,
+      argocd         = var.argocd,
+      keycloak       = local.keycloak,
+    })
+  ]
+}
+
 resource "argocd_application" "operator" {
   metadata {
     name      = "keycloak-operator"
@@ -77,14 +96,7 @@ resource "argocd_application" "this" {
       path            = "charts/keycloak"
       target_revision = "main"
       helm {
-        values = templatefile("${path.module}/values.tmpl.yaml", {
-          oidc           = var.oidc,
-          base_domain    = var.base_domain,
-          cluster_issuer = var.cluster_issuer,
-          argocd         = var.argocd,
-
-          keycloak = local.keycloak,
-        })
+        values = data.utils_deep_merge_yaml.values.output
       }
     }
 

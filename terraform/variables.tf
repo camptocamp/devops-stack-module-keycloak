@@ -32,6 +32,11 @@ variable "namespace" {
   default = "keycloak"
 }
 
+variable "profile" {
+  type    = string
+  default = "default"
+}
+
 
 #######################
 ## Module variables
