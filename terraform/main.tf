@@ -40,9 +40,6 @@ resource "argocd_application" "operator" {
       repo_url        = "https://github.com/keycloak/keycloak-operator.git"
       path            = "deploy"
       target_revision = "15.0.1"
-      helm {
-        values = ""
-      }
     }
 
     destination {
