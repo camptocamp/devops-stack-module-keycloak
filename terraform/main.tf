@@ -27,6 +27,42 @@ resource "argocd_project" "this" {
   }
 }
 
+resource "argocd_application" "operator" {
+  metadata {
+    name      = "keycloak-operator"
+    namespace = var.argocd.namespace
+  }
+
+  spec {
+    project = argocd_project.this.metadata.0.name
+
+    source {
+      repo_url        = "https://github.com/keycloak/keycloak-operator.git"
+      path            = "deploy"
+      target_revision = "15.0.1"
+      helm {
+        values = ""
+      }
+    }
+
+    destination {
+      server    = "https://kubernetes.default.svc"
+      namespace = var.namespace
+    }
+
+    sync_policy {
+      automated = {
+        prune     = true
+        self_heal = true
+      }
+
+      sync_options = [
+        "CreateNamespace=true"
+      ]
+    }
+  }
+}
+
 resource "argocd_application" "this" {
   metadata {
     name      = "keycloak"
@@ -68,4 +104,6 @@ resource "argocd_application" "this" {
       ]
     }
   }
+
+  depends_on = [ argocd_application.operator ]
 }
