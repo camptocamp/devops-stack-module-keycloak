@@ -29,7 +29,7 @@ variable "cluster_issuer" {
 
 variable "namespace" {
   type    = string
-  default = "kube-prometheus-stack"
+  default = "keycloak"
 }
 
 
