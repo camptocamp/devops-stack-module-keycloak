@@ -9,7 +9,10 @@ resource "argocd_project" "this" {
  
   spec {
     description  = "keycloak application project"
-    source_repos = ["https://github.com/camptocamp/devops-stack-module-keycloak.git"]
+    source_repos = [
+      "https://github.com/camptocamp/devops-stack-module-keycloak.git",
+      "https://github.com/keycloak/keycloak-operator.git"
+    ]
  
     destination {
       server    = "https://kubernetes.default.svc"
