@@ -31,22 +31,13 @@ resource "argocd_project" "this" {
 }
 
 data "utils_deep_merge_yaml" "values" {
-  input = [
-    templatefile("${path.module}/profiles/default.yaml", {
+  input = [ for i in var.profiles : templatefile("${path.module}/profiles/${i}.yaml", {
       oidc           = var.oidc,
       base_domain    = var.base_domain,
       cluster_issuer = var.cluster_issuer,
       argocd         = var.argocd,
       keycloak       = local.keycloak,
-    }),
-    templatefile("${path.module}/profiles/${var.profile}.yaml", {
-      oidc           = var.oidc,
-      base_domain    = var.base_domain,
-      cluster_issuer = var.cluster_issuer,
-      argocd         = var.argocd,
-      keycloak       = local.keycloak,
-    })
-  ]
+  }) ]
 }
 
 resource "argocd_application" "operator" {
