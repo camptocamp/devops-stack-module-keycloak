@@ -29,7 +29,7 @@ keycloakClient:
       - "https://argocd.apps.${base_domain}/auth/callback"
       - "https://${argocd.domain}/auth/callback"
 keycloakUsers:
-  %{ for username, infos in keycloak.user_map }
+  %{ for username, infos in user_map }
   ${username}:
     name: ${lookup(infos, "name")}
     first_name: ${lookup(infos, "first_name")}

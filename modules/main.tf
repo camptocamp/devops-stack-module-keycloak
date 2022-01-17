@@ -37,6 +37,7 @@ data "utils_deep_merge_yaml" "values" {
       cluster_issuer = var.cluster_issuer,
       argocd         = var.argocd,
       keycloak       = local.keycloak,
+      user_map       = local.user_map
   }) ]
 }
 
@@ -109,4 +110,17 @@ resource "argocd_application" "this" {
   }
 
   depends_on = [ argocd_application.operator ]
+}
+
+#data "kubernetes_secret" "keycloak_admin_password" {
+#  metadata {
+#    name      = "credential-keycloak"
+#    namespace = "keycloak"
+#  }
+#}
+
+resource "random_password" "keycloak_passwords" {
+  for_each = local.keycloak.user_map
+  length   = 16
+  special  = false
 }
