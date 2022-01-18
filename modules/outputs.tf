@@ -1,3 +1,9 @@
+output "oidc" {
+  description = "OIDC values"
+  sensitive   = true
+  value       = local.oidc
+}
+
 output "keycloak_users" {
   value     = { for username, infos in local.user_map : username => lookup(infos, "password") }
   sensitive = true

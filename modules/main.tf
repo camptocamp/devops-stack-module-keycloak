@@ -32,7 +32,7 @@ resource "argocd_project" "this" {
 
 data "utils_deep_merge_yaml" "values" {
   input = [ for i in var.profiles : templatefile("${path.module}/profiles/${i}.yaml", {
-      oidc           = var.oidc,
+      oidc           = local.oidc,
       base_domain    = var.base_domain,
       cluster_issuer = var.cluster_issuer,
       argocd         = var.argocd,
@@ -110,6 +110,11 @@ resource "argocd_application" "this" {
   }
 
   depends_on = [ argocd_application.operator ]
+}
+
+resource "random_password" "clientsecret" {
+  length  = 16
+  special = false
 }
 
 #data "kubernetes_secret" "keycloak_admin_password" {

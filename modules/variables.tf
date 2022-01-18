@@ -10,11 +10,6 @@ variable "base_domain" {
   type = string
 }
 
-variable "oidc" {
-  type = any
-  default = {}
-}
-
 variable "argocd" {
   type = object({
     namespace  = string
