@@ -27,11 +27,11 @@ variable "namespace" {
   default = "keycloak"
 }
 
-variable "profiles" {
-  type    = list(string)
-  default = ["default"]
-}
 
+variable "extra_yaml" {
+  type    = list(string)
+  default = []
+}
 
 #######################
 ## Module variables

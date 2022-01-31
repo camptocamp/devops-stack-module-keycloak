@@ -30,4 +30,14 @@ locals {
       "--ssl-insecure-skip-verify=true",
     ]
   }
+
+  default_yaml = [ templatefile("${path.module}/values.tmpl.yaml", {
+    oidc           = local.oidc,
+    base_domain    = var.base_domain,
+    cluster_issuer = var.cluster_issuer,
+    argocd         = var.argocd,
+    keycloak       = local.keycloak,
+    user_map       = local.user_map
+  }) ]
+  all_yaml = concat(local.default_yaml, var.extra_yaml)
 }
