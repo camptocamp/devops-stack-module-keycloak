@@ -7,7 +7,7 @@ locals {
         email      = "jdoe@example.com"
       }
     }
-    domain   = "keycloak.apps.${var.cluster_name}.${var.base_domain}"
+    domain   = "keycloak.apps.${var.cluster_info.cluster_name}.${var.cluster_info.base_domain}"
   }
 
   keycloak = merge(
@@ -19,10 +19,10 @@ locals {
 
 
   oidc = {
-    issuer_url    = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack", var.cluster_name, var.base_domain)
-    oauth_url     = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack/protocol/openid-connect/auth", var.cluster_name, var.base_domain)
-    token_url     = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack/protocol/openid-connect/token", var.cluster_name, var.base_domain)
-    api_url       = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack/protocol/openid-connect/userinfo", var.cluster_name, var.base_domain)
+    issuer_url    = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack", var.cluster_info.cluster_name, var.cluster_info.base_domain)
+    oauth_url     = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack/protocol/openid-connect/auth", var.cluster_info.cluster_name, var.cluster_info.base_domain)
+    token_url     = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack/protocol/openid-connect/token", var.cluster_info.cluster_name, var.cluster_info.base_domain)
+    api_url       = format("https://keycloak.apps.%s.%s/auth/realms/devops-stack/protocol/openid-connect/userinfo", var.cluster_info.cluster_name, var.cluster_info.base_domain)
     client_id     = "devops-stack-applications"
     client_secret = random_password.clientsecret.result
     oauth2_proxy_extra_args = [
@@ -33,7 +33,7 @@ locals {
 
   default_yaml = [ templatefile("${path.module}/values.tmpl.yaml", {
     oidc           = local.oidc,
-    base_domain    = var.base_domain,
+    cluster_info   = var.cluster_info,
     cluster_issuer = var.cluster_issuer,
     argocd         = var.argocd,
     keycloak       = local.keycloak,
