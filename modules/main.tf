@@ -1,10 +1,7 @@
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
-    annotations = {
-      "devops-stack.io/argocd_namespace" = var.argocd.namespace
-    }
+    namespace = var.cluster_info.argocd_namespace
   }
  
   spec {
@@ -37,8 +34,10 @@ data "utils_deep_merge_yaml" "values" {
 resource "argocd_application" "operator" {
   metadata {
     name      = "keycloak-operator"
-    namespace = var.argocd.namespace
+    namespace = var.cluster_info.argocd_namespace
   }
+
+  wait = true
 
   spec {
     project = argocd_project.this.metadata.0.name
@@ -70,7 +69,7 @@ resource "argocd_application" "operator" {
 resource "argocd_application" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
+    namespace = var.cluster_info.argocd_namespace
   }
 
   spec {
