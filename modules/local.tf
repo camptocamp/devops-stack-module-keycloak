@@ -35,7 +35,6 @@ locals {
     oidc           = local.oidc,
     cluster_info   = var.cluster_info,
     cluster_issuer = var.cluster_issuer,
-    argocd         = var.argocd,
     keycloak       = local.keycloak,
     user_map       = local.user_map
   }) ]
