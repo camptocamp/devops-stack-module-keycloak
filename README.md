@@ -9,12 +9,8 @@ A [DevOps Stack](https://devops-stack.io) module to deploy and configure [Keyclo
 module "oidc" {
   source = "git::https://github.com/camptocamp/devops-stack-module-keycloak.git//modules"
 
-  cluster_name   = var.cluster_name
-  argocd         = {
-    namespace = module.cluster.argocd_namespace
-    domain    = module.cluster.argocd_domain
-  }
-  base_domain    = module.cluster.base_domain
+  cluster_info = module.cluster.info
+
   cluster_issuer = "ca-issuer"
 
   depends_on = [ module.ingress ]
