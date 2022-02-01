@@ -37,6 +37,8 @@ resource "argocd_application" "operator" {
     namespace = var.cluster_info.argocd_namespace
   }
 
+  wait = true
+
   spec {
     project = argocd_project.this.metadata.0.name
 
