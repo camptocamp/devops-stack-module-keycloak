@@ -10,14 +10,14 @@ ingress:
     - host: "${keycloak.domain}"
       paths:
         - /
-    - host: "keycloak.apps.${cluster_info.base_domain}"
+    - host: "keycloak.apps.${base_domain}"
       paths:
         - /
   tls:
     - secretName: keycloak-tls
       hosts:
         - "${keycloak.domain}"
-        - "keycloak.apps.${cluster_info.base_domain}"
+        - "keycloak.apps.${base_domain}"
 service:
   annotations:
     traefik.ingress.kubernetes.io/service.serversscheme: https

@@ -2,11 +2,18 @@
 ## Standard variables
 #######################
 
-variable "cluster_info" {
+variable "cluster_name" {
+  type = string
+}
+
+variable "base_domain" {
+  type = string
+}
+
+variable "argocd" {
   type = object({
-    cluster_name     = string
-    base_domain      = string
-    argocd_namespace = string
+    namespace  = string
+    domain     = string
   })
 }
 
@@ -19,6 +26,7 @@ variable "namespace" {
   type    = string
   default = "keycloak"
 }
+
 
 variable "extra_yaml" {
   type    = list(string)
