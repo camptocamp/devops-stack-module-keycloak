@@ -15,7 +15,7 @@ resource "argocd_project" "this" {
     ]
 
     destination {
-      server    = "https://kubernetes.default.svc"
+      name      = "in-cluster"
       namespace = var.namespace
     }
 
@@ -52,7 +52,7 @@ resource "argocd_application" "operator" {
     }
 
     destination {
-      server    = "https://kubernetes.default.svc"
+      name      = "in-cluster"
       namespace = var.namespace
     }
 
@@ -88,7 +88,7 @@ resource "argocd_application" "this" {
     }
 
     destination {
-      server    = "https://kubernetes.default.svc"
+      name      = "in-cluster"
       namespace = var.namespace
     }
 
