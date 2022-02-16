@@ -7,7 +7,7 @@ locals {
         email      = "jdoe@example.com"
       }
     }
-    domain   = "keycloak.apps.${var.cluster_name}.${var.base_domain}"
+    domain = "keycloak.apps.${var.cluster_name}.${var.base_domain}"
   }
 
   keycloak = merge(
@@ -31,12 +31,12 @@ locals {
     ]
   }
 
-  default_yaml = [ templatefile("${path.module}/values.tmpl.yaml", {
+  default_yaml = [templatefile("${path.module}/values.tmpl.yaml", {
     oidc           = local.oidc,
     base_domain    = var.base_domain,
     cluster_issuer = var.cluster_issuer,
     keycloak       = local.keycloak,
     user_map       = local.user_map
-  }) ]
+  })]
   all_yaml = concat(local.default_yaml, var.extra_yaml)
 }

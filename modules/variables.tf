@@ -12,8 +12,8 @@ variable "base_domain" {
 
 variable "argocd" {
   type = object({
-    namespace  = string
-    domain     = string
+    namespace = string
+    domain    = string
   })
 }
 

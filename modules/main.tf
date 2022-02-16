@@ -6,19 +6,19 @@ resource "argocd_project" "this" {
       "devops-stack.io/argocd_namespace" = var.argocd.namespace
     }
   }
- 
+
   spec {
-    description  = "keycloak application project"
+    description = "keycloak application project"
     source_repos = [
       "https://github.com/camptocamp/devops-stack-module-keycloak.git",
       "https://github.com/keycloak/keycloak-operator.git"
     ]
- 
+
     destination {
       server    = "https://kubernetes.default.svc"
       namespace = var.namespace
     }
- 
+
     orphaned_resources {
       warn = true
     }
@@ -104,7 +104,7 @@ resource "argocd_application" "this" {
     }
   }
 
-  depends_on = [ argocd_application.operator ]
+  depends_on = [argocd_application.operator]
 }
 
 resource "random_password" "clientsecret" {
