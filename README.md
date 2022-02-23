@@ -7,7 +7,7 @@ A [DevOps Stack](https://devops-stack.io) module to deploy and configure [Keyclo
 
 ```hcl
 module "oidc" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-keycloak.git//modules"
+  source = "git::https://github.com/camptocamp/devops-stack-module-keycloak.git/"
 
   cluster_name   = var.cluster_name
   argocd         = {
