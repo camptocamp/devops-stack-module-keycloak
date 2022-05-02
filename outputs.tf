@@ -1,3 +1,7 @@
+output "id" {
+  value = resource.null_resource.this.id
+}
+
 output "oidc" {
   description = "OIDC values"
   sensitive   = true
