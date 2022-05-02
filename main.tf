@@ -1,3 +1,7 @@
+resource "null_resource" "dependencies" {
+  triggers = var.dependency_ids
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
@@ -67,6 +71,10 @@ resource "argocd_application" "operator" {
       ]
     }
   }
+
+  depends_on = [
+    resource.null_resource.dependencies,
+  ]
 }
 
 resource "argocd_application" "this" {
@@ -123,4 +131,10 @@ resource "random_password" "keycloak_passwords" {
   for_each = local.keycloak.user_map
   length   = 16
   special  = false
+}
+
+resource "null_resource" "this" {
+  depends_on = [
+    resource.argocd_application.this,
+  ]
 }
