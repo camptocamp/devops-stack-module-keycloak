@@ -1,5 +1,5 @@
 ---
-apiVersion: keycloak.org/v1alpha1
+apiVersion: keycloak.org/v2alpha1
 kind: KeycloakRealm
 metadata:
   annotations:
@@ -12,7 +12,7 @@ spec:
     id: devops-stack
     realm: devops-stack
     enabled: true
-    displayName: devops-stack Realm
+    displayName: DevOps Stack Realm
   instanceSelector:
     matchLabels:
       app: sso

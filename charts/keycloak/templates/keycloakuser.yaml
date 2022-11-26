@@ -1,6 +1,6 @@
 {{- range $username, $infos := .Values.keycloakUsers }}
 ---
-apiVersion: keycloak.org/v1alpha1
+apiVersion: keycloak.org/v2alpha1
 kind: KeycloakUser
 metadata:
   annotations:
