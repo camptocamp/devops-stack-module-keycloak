@@ -12,10 +12,9 @@ resource "argocd_project" "this" {
   }
 
   spec {
-    description = "keycloak application project"
+    description = "Keycloak application project"
     source_repos = [
       "https://github.com/camptocamp/devops-stack-module-keycloak.git",
-      "https://github.com/keycloak/keycloak-operator.git"
     ]
 
     destination {
@@ -51,8 +50,8 @@ resource "argocd_application" "operator" {
 
     source {
       repo_url        = "https://github.com/keycloak/keycloak-operator.git"
-      path            = "deploy"
-      target_revision = "15.0.1"
+      path            = "charts/keycloak-operator"
+      target_revision = var.target_revision
     }
 
     destination {
