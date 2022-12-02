@@ -22,7 +22,7 @@ spec:
           pathType: ImplementationSpecific
   {{- if .Values.keycloak.ingress.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
+    {{- range .Values.keycloak.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
