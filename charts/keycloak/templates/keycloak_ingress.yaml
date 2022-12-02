@@ -10,16 +10,18 @@ metadata:
   {{- end }}
 spec:
   rules:
-    - host: {{ .Values.keycloak.ingress.host }}
+    {{- range .Values.keycloak.ingress.hosts }}
+    - host: {{ . | quote }}
       http:
         paths:
-        - backend:
+        - path: /
+          pathType: Prefix
+          backend:
             service:
               name: {{ .Chart.Name }}-clusterip
               port:
                 number: 8080
-          path: /
-          pathType: ImplementationSpecific
+    {{- end }}
   {{- if .Values.keycloak.ingress.tls }}
   tls:
     {{- range .Values.keycloak.ingress.tls }}
