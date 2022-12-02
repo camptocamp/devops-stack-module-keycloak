@@ -6,13 +6,3 @@ description: |
   This chart installs Keycloak in development mode for the identity and access management.
   It is mainly used for the deployment of OIDC in test Kubernetes clusters that do not provide OIDC out-of-the-box, 
   such as KinD and K3s
-  
-  It handles:
-  
-  * installation and configuration of Keycloak
-  * creating `devops-stack` realm and `jdoe` user account under a `devops-stack` realm
-  * adds the following DevOps stack apps as clients to OAuth2/OIDC authentication server:
-    * argocd        
-    * grafana
-    * prometheus
-    * alertmanager
