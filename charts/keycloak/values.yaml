@@ -1,5 +1,4 @@
 ---
 keycloak:
-  image: quay.io/keycloak/keycloak:20.0.1
   ingress:
     enabled: false
