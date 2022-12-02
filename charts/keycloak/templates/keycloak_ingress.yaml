@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}
+  name: keycloak
   {{- with .Values.keycloak.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -18,7 +18,7 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: {{ .Chart.Name }}-clusterip
+              name: keycloak
               port:
                 number: 8080
     {{- end }}

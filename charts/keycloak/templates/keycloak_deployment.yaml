@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: keycloak
   labels:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
