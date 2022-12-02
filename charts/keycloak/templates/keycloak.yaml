@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   name: keycloak
   labels:
-    app: sso
+    {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
   externalDatabase:
     enabled: true

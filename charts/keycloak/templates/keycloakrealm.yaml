@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   name: devops-stack
   labels:
-    app: sso
+    {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
   realm:
     id: devops-stack
@@ -15,4 +15,4 @@ spec:
     displayName: DevOps Stack Realm
   instanceSelector:
     matchLabels:
-      app: sso
+      {{- include "devops-stack-module-keycloak.selector" $ | indent 6 }}
