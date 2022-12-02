@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "devops-stack-module-keycloak.selector" $ | indent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "devops-stack-module-keycloak.labels" $ | indent 8 }}
+    spec:
+      containers:
+      - name: keycloak
+        image: {{ .Values.image }}
+        args:
+        - "start-dev"
+        - "--import-realm"
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "admin"
+        - name: KC_PROXY
+          value: "edge"
+        ports:
+        - name: http
+          containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /realms/master
+            port: 8080

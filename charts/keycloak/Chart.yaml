@@ -3,9 +3,10 @@ apiVersion: "v2"
 name: "keycloak"
 version: "0"
 description: |
-  NOTE: This chart is enabled only when deploying DevOps Stack to clouds not providing OIDC out of the box.
-
-  This chart installs Keycloak for the identity and access management.
+  This chart installs Keycloak in development mode for the identity and access management.
+  It is mainly used for the deployment of OIDC in test Kubernetes clusters that do not provide OIDC out-of-the-box, 
+  such as KinD and K3s
+  
   It handles:
   
   * installation and configuration of Keycloak
@@ -15,5 +16,3 @@ description: |
     * grafana
     * prometheus
     * alertmanager
-
-  NOTE: This chart must be instantiated in a sync-wave after the keycloak-operator chart.
