@@ -4,7 +4,7 @@ kind: KeycloakRealmImport
 metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-  name: devops-stack-realm
+  name: keycloak-realm-devops-stack
   labels:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:

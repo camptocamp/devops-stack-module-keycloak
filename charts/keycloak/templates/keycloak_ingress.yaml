@@ -20,7 +20,7 @@ spec:
             service:
               name: keycloak
               port:
-                number: 8443
+                number: 8080
     {{- end }}
   {{- if .Values.keycloak.ingress.tls }}
   tls:
