@@ -35,6 +35,8 @@ resource "argocd_project" "this" {
 
 data "utils_deep_merge_yaml" "values" {
   input = local.all_yaml
+  # TODO Re-add this when refactoring for the new model using helm_values
+  # input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
 }
 
 resource "argocd_application" "operator" {
@@ -61,8 +63,9 @@ resource "argocd_application" "operator" {
 
     sync_policy {
       automated = {
-        prune     = true
-        self_heal = true
+        allow_empty = false
+        prune       = true
+        self_heal   = true
       }
 
       sync_options = [
@@ -101,8 +104,9 @@ resource "argocd_application" "this" {
 
     sync_policy {
       automated = {
-        prune     = true
-        self_heal = true
+        allow_empty = false
+        prune       = true
+        self_heal   = true
       }
 
       sync_options = [
@@ -115,7 +119,7 @@ resource "argocd_application" "this" {
 }
 
 resource "random_password" "clientsecret" {
-  length  = 16
+  length  = 25
   special = false
 }
 

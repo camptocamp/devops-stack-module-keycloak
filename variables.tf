@@ -34,14 +34,14 @@ variable "namespace" {
 }
 
 
-variable "extra_yaml" {
-  type    = list(string)
-  default = []
+variable "helm_values" {
+  description = "Helm chart value overrides. They should be passed as a list of HCL structures."
+  type        = any
+  default     = []
 }
 
 variable "dependency_ids" {
   type = map(string)
-
   default = {}
 }
 

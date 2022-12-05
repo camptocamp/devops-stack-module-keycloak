@@ -1,37 +1,36 @@
-ingress:
-  enabled: true
-  annotations:
-    cert-manager.io/cluster-issuer: "${cluster_issuer}"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    ingress.kubernetes.io/ssl-redirect: "true"
-    kubernetes.io/ingress.allow-http: "false"
-  hosts:
-    - host: "${keycloak.domain}"
-      paths:
-        - /
-    - host: "keycloak.apps.${base_domain}"
-      paths:
-        - /
-  tls:
-    - secretName: keycloak-tls
-      hosts:
-        - "${keycloak.domain}"
-        - "keycloak.apps.${base_domain}"
-service:
-  annotations:
-    traefik.ingress.kubernetes.io/service.serversscheme: https
-keycloakClient:
-  client:
-    clientId: "${replace(oidc.client_id, "\"", "\\\"")}"
-    secret: "${replace(oidc.client_secret, "\"", "\\\"")}"
-    redirectUris:
-      - "*"
-keycloakUsers:
-  %{ for username, infos in user_map }
-  ${username}:
-    name: ${lookup(infos, "name")}
-    first_name: ${lookup(infos, "first_name")}
-    password: ${lookup(infos, "password")}
-    email: ${lookup(infos, "email")}
-  %{ endfor }
+keycloak:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "${cluster_issuer}"
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.allow-http: "false"
+    hosts:
+      - host: "${keycloak.domain}"
+        path: /
+      - host: "keycloak.apps.${base_domain}"
+        path: /
+    tls:
+      - secretName: keycloak-tls
+        hosts:
+          - "${keycloak.domain}"
+          - "keycloak.apps.${base_domain}"
+  service:
+    annotations:
+      traefik.ingress.kubernetes.io/service.serversscheme: https
+  keycloakClient:
+    client:
+      clientId: "${replace(oidc.client_id, "\"", "\\\"")}"
+      secret: "${replace(oidc.client_secret, "\"", "\\\"")}"
+      redirectUris:
+        - "*"
+  keycloakUsers:
+    %{ for username, infos in user_map }
+    ${username}:
+      name: ${lookup(infos, "name")}
+      first_name: ${lookup(infos, "first_name")}
+      password: ${lookup(infos, "password")}
+      email: ${lookup(infos, "email")}
+    %{ endfor }

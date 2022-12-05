@@ -9,7 +9,7 @@ metadata:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
   keycloakCRName: keycloak # Name of the CR that created the Keycloak
-  
+
   # Realm definition (user definition and authentication settings must be inside)  
   realm:
     enabled: true
