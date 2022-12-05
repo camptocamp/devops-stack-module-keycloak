@@ -8,14 +8,7 @@ metadata:
   labels:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
-  externalDatabase:
-    enabled: true
   instances: 1
-  keycloakDeploymentSpec:
-    experimental:
-      env:
-        - name: "DB_VENDOR"
-          value: "h2"
-        - name: "DB_ADDR"
-        - name: "DB_USER"
-        - name: "DB_PASSWORD"
+  hostname: INSECURE-DISABLE
+  tlsSecret: INSECURE-DISABLE
+  disableDefaultIngress: true
