@@ -81,11 +81,11 @@ Type: `map(string)`
 
 Default: `{}`
 
-==== [[input_extra_yaml]] <<input_extra_yaml,extra_yaml>>
+==== [[input_helm_values]] <<input_helm_values,helm_values>>
 
-Description: n/a
+Description: Helm chart value overrides. They should be passed as a list of HCL structures.
 
-Type: `list(string)`
+Type: `any`
 
 Default: `[]`
 
@@ -111,7 +111,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0"`
+Default: `"v1.0.0-alpha.1"`
 
 === Outputs
 
@@ -202,9 +202,9 @@ object({
 |`{}`
 |no
 
-|[[input_extra_yaml]] <<input_extra_yaml,extra_yaml>>
-|n/a
-|`list(string)`
+|[[input_helm_values]] <<input_helm_values,helm_values>>
+|Helm chart value overrides. They should be passed as a list of HCL structures.
+|`any`
 |`[]`
 |no
 
@@ -223,7 +223,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0"`
+|`"v1.0.0-alpha.1"`
 |no
 
 |===
