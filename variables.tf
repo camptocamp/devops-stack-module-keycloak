@@ -1,20 +1,28 @@
-#######################
-## Standard variables
-#######################
+variable "database" {
+  description = "Keycloak external DB server info."
+  type = object({
+    vendor   = string
+    host     = string
+    username = string
+    password = string
+  })
+  default = null
+}
 
 variable "cluster_name" {
   type = string
 }
 
-variable "base_domain" {
-  type = string
+# Variable used to add annotation to ingress. Must only be set when cert-manager is declared as a dependency.
+# TODO set condition to add annotation.
+# TODO group "cluster_issuer" and cert-manager module id.
+variable "cluster_issuer" {
+  type    = string
+  default = "ca-issuer"
 }
 
-variable "argocd" {
-  type = object({
-    namespace = string
-    domain    = string
-  })
+variable "base_domain" {
+  type = string
 }
 
 variable "target_revision" {
@@ -23,9 +31,9 @@ variable "target_revision" {
   default     = "v1.0.0-alpha.1" # x-release-please-version
 }
 
-variable "cluster_issuer" {
+variable "argocd_namespace" {
   type    = string
-  default = "ca-issuer"
+  default = "argocd"
 }
 
 variable "namespace" {
@@ -33,24 +41,13 @@ variable "namespace" {
   default = "keycloak"
 }
 
-
 variable "helm_values" {
-  description = "Helm chart value overrides. They should be passed as a list of HCL structures."
+  description = "Helm override values."
   type        = any
   default     = []
 }
 
 variable "dependency_ids" {
-  type = map(string)
+  type    = map(string)
   default = {}
-}
-
-#######################
-## Module variables
-#######################
-
-variable "keycloak" {
-  description = "Keycloak settings"
-  type        = any
-  default     = {}
 }

@@ -2,17 +2,19 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "random_password" "db_password" {
+  count  = var.database == null ? 1 : 0
+  length = 16
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
-    annotations = {
-      "devops-stack.io/argocd_namespace" = var.argocd.namespace
-    }
+    namespace = var.argocd_namespace
   }
 
   spec {
-    description = "Keycloak application project"
+    description = "Keycloak project."
     source_repos = [
       "https://github.com/camptocamp/devops-stack-module-keycloak.git",
     ]
@@ -34,15 +36,13 @@ resource "argocd_project" "this" {
 }
 
 data "utils_deep_merge_yaml" "values" {
-  input = local.all_yaml
-  # TODO Re-add this when refactoring for the new model using helm_values
-  # input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
+  input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
 }
 
-resource "argocd_application" "operator" {
+resource "argocd_application" "keycloak_operator" {
   metadata {
     name      = "keycloak-operator"
-    namespace = var.argocd.namespace
+    namespace = var.argocd_namespace
   }
 
   wait = true
@@ -53,44 +53,6 @@ resource "argocd_application" "operator" {
     source {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
       path            = "charts/keycloak-operator"
-      target_revision = var.target_revision
-    }
-
-    destination {
-      name      = "in-cluster"
-      namespace = var.namespace
-    }
-
-    sync_policy {
-      automated = {
-        allow_empty = false
-        prune       = true
-        self_heal   = true
-      }
-
-      sync_options = [
-        "CreateNamespace=true"
-      ]
-    }
-  }
-
-  depends_on = [
-    resource.null_resource.dependencies,
-  ]
-}
-
-resource "argocd_application" "this" {
-  metadata {
-    name      = "keycloak"
-    namespace = var.argocd.namespace
-  }
-
-  spec {
-    project = argocd_project.this.metadata.0.name
-
-    source {
-      repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
-      path            = "charts/keycloak"
       target_revision = var.target_revision
       helm {
         values = data.utils_deep_merge_yaml.values.output
@@ -109,35 +71,27 @@ resource "argocd_application" "this" {
         self_heal   = true
       }
 
+      retry {
+        backoff = {
+          duration     = ""
+          max_duration = ""
+        }
+        limit = "0"
+      }
+
       sync_options = [
         "CreateNamespace=true"
       ]
     }
   }
 
-  depends_on = [argocd_application.operator]
-}
-
-resource "random_password" "clientsecret" {
-  length  = 25
-  special = false
-}
-
-#data "kubernetes_secret" "keycloak_admin_password" {
-#  metadata {
-#    name      = "credential-keycloak"
-#    namespace = "keycloak"
-#  }
-#}
-
-resource "random_password" "keycloak_passwords" {
-  for_each = local.keycloak.user_map
-  length   = 16
-  special  = false
+  depends_on = [
+    resource.null_resource.dependencies,
+  ]
 }
 
 resource "null_resource" "this" {
   depends_on = [
-    resource.argocd_application.this,
+    resource.argocd_application.keycloak_operator,
   ]
 }

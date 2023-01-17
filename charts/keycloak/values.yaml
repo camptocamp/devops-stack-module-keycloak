@@ -1,4 +1,0 @@
----
-keycloak:
-  ingress:
-    enabled: false
