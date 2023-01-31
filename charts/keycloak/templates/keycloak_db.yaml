@@ -3,19 +3,19 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: keycloak-postgresql-db
+  name: {{ .Values.keycloak.database.host }}
   labels:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
   serviceName: postgresql-db-service
   selector:
     matchLabels:
-      app: keycloak-postgresql-db
+      app: {{ .Values.keycloak.database.host }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: keycloak-postgresql-db
+        app: {{ .Values.keycloak.database.host }}
     spec:
       containers:
       - name: postgresql-db
@@ -25,7 +25,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: keycloak-db-secret
-              key: password
+              key: username
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -44,7 +44,7 @@ metadata:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
   selector:
-    app: keycloak-postgresql-db
+    app: {{ .Values.keycloak.database.host }}
   type: ClusterIP
   ports:
   - port: 5432

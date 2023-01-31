@@ -14,7 +14,7 @@ locals {
         vendor   = "postgres"
         username = base64encode("postgres")
         password = base64encode(random_password.db_password.0.result)
-        host     = "postgres-db"
+        host     = "keycloak-postgres-db"
       }
       ingress = {
         enabled = true
