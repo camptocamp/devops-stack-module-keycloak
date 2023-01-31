@@ -10,10 +10,10 @@ spec:
     vendor: {{ .Values.keycloak.database.vendor }}
     host: {{ .Values.keycloak.database.host }}
     usernameSecret:
-      name: db-secret
+      name: keycloak-db-secret
       key: username
     passwordSecret:
-      name: db-secret
+      name: keycloak-db-secret
       key: password
   http:
     httpEnabled: true # Use HTTP since we use Traefik as a reverse proxy for HTTPS
