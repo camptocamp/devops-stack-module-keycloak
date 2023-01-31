@@ -1,19 +1,25 @@
 // BEGIN_TF_DOCS
 === Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- [[requirement_argocd]] <<requirement_argocd,argocd>> (~> 4)
+
+- [[requirement_random]] <<requirement_random,random>> (~> 3)
+
+- [[requirement_utils]] <<requirement_utils,utils>> (~> 1)
 
 === Providers
 
 The following providers are used by this module:
 
-- [[provider_argocd]] <<provider_argocd,argocd>>
+- [[provider_argocd]] <<provider_argocd,argocd>> (~> 4)
 
 - [[provider_null]] <<provider_null,null>>
 
-- [[provider_random]] <<provider_random,random>>
+- [[provider_random]] <<provider_random,random>> (~> 3)
 
-- [[provider_utils]] <<provider_utils,utils>>
+- [[provider_utils]] <<provider_utils,utils>> (~> 1)
 
 === Modules
 
@@ -28,36 +34,30 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
-- https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.clientsecret] (resource)
-- https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.keycloak_passwords] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.clientsecret] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.keycloak_passwords] (resource)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
 === Required Inputs
 
 The following input variables are required:
 
-==== [[input_argocd]] <<input_argocd,argocd>>
+==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 
-Description: n/a
+Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
 
-Type:
-[source,hcl]
-----
-object({
-    namespace = string
-    domain    = string
-  })
-----
+Type: `string`
 
 ==== [[input_base_domain]] <<input_base_domain,base_domain>>
 
-Description: n/a
+Description: Base domain of the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
 ==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
 
-Description: n/a
+Description: Name given to the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
@@ -65,13 +65,54 @@ Type: `string`
 
 The following input variables are optional (have default values):
 
+==== [[input_app_autosync]] <<input_app_autosync,app_autosync>>
+
+Description: Automated sync options for the Argo CD Application resource.
+
+Type:
+[source,hcl]
+----
+object({
+    allow_empty = optional(bool)
+    prune       = optional(bool)
+    self_heal   = optional(bool)
+  })
+----
+
+Default:
+[source,json]
+----
+{
+  "allow_empty": false,
+  "prune": true,
+  "self_heal": true
+}
+----
+
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
-Description: n/a
+Description: SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 
 Type: `string`
 
 Default: `"ca-issuer"`
+
+==== [[input_database]] <<input_database,database>>
+
+Description: Keycloak external DB server info.
+
+Type:
+[source,hcl]
+----
+object({
+    vendor   = string
+    host     = string
+    username = string
+    password = string
+  })
+----
+
+Default: `null`
 
 ==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 
@@ -89,17 +130,9 @@ Type: `any`
 
 Default: `[]`
 
-==== [[input_keycloak]] <<input_keycloak,keycloak>>
-
-Description: Keycloak settings
-
-Type: `any`
-
-Default: `{}`
-
 ==== [[input_namespace]] <<input_namespace,namespace>>
 
-Description: n/a
+Description: Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
 
 Type: `string`
 
@@ -122,17 +155,25 @@ The following outputs are exported:
 Description: n/a
 // END_TF_DOCS
 // BEGIN_TF_TABLES
+= Requirements
 
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[requirement_argocd]] <<requirement_argocd,argocd>> |~> 4
+|[[requirement_random]] <<requirement_random,random>> |~> 3
+|[[requirement_utils]] <<requirement_utils,utils>> |~> 1
+|===
 
 = Providers
 
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_argocd]] <<provider_argocd,argocd>> |n/a
+|[[provider_argocd]] <<provider_argocd,argocd>> |~> 4
 |[[provider_null]] <<provider_null,null>> |n/a
-|[[provider_random]] <<provider_random,random>> |n/a
-|[[provider_utils]] <<provider_utils,utils>> |n/a
+|[[provider_random]] <<provider_random,random>> |~> 3
+|[[provider_utils]] <<provider_utils,utils>> |~> 1
 |===
 
 = Resources
@@ -145,8 +186,9 @@ Description: n/a
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
-|https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.clientsecret] |resource
-|https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.keycloak_passwords] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.clientsecret] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.keycloak_passwords] |resource
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
 
@@ -155,38 +197,72 @@ Description: n/a
 [cols="a,a,a,a,a",options="header,autowidth"]
 |===
 |Name |Description |Type |Default |Required
-|[[input_argocd]] <<input_argocd,argocd>>
-|n/a
+|[[input_app_autosync]] <<input_app_autosync,app_autosync>>
+|Automated sync options for the Argo CD Application resource.
 |
 
 [source]
 ----
 object({
-    namespace = string
-    domain    = string
+    allow_empty = optional(bool)
+    prune       = optional(bool)
+    self_heal   = optional(bool)
   })
 ----
 
+|
+
+[source]
+----
+{
+  "allow_empty": false,
+  "prune": true,
+  "self_heal": true
+}
+----
+
+|no
+
+|[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+|Namespace used by Argo CD where the Application and AppProject resources should be created.
+|`string`
 |n/a
 |yes
 
 |[[input_base_domain]] <<input_base_domain,base_domain>>
-|n/a
+|Base domain of the cluster. Value used for the ingress' URL of the application.
 |`string`
 |n/a
 |yes
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
-|n/a
+|SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 |`string`
 |`"ca-issuer"`
 |no
 
 |[[input_cluster_name]] <<input_cluster_name,cluster_name>>
-|n/a
+|Name given to the cluster. Value used for the ingress' URL of the application.
 |`string`
 |n/a
 |yes
+
+|[[input_database]] <<input_database,database>>
+|Keycloak external DB server info.
+|
+
+[source]
+----
+object({
+    vendor   = string
+    host     = string
+    username = string
+    password = string
+  })
+----
+
+|`null`
+|no
 
 |[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 |n/a
@@ -200,14 +276,8 @@ object({
 |`[]`
 |no
 
-|[[input_keycloak]] <<input_keycloak,keycloak>>
-|Keycloak settings
-|`any`
-|`{}`
-|no
-
 |[[input_namespace]] <<input_namespace,namespace>>
-|n/a
+|Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
 |`string`
 |`"keycloak"`
 |no
