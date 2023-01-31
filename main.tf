@@ -137,24 +137,6 @@ resource "argocd_application" "this" {
   ]
 }
 
-resource "random_password" "clientsecret" {
-  length  = 25
-  special = false
-}
-
-#data "kubernetes_secret" "keycloak_admin_password" {
-#  metadata {
-#    name      = "credential-keycloak"
-#    namespace = "keycloak"
-#  }
-#}
-
-resource "random_password" "keycloak_passwords" {
-  for_each = local.keycloak.user_map
-  length   = 16
-  special  = false
-}
-
 resource "null_resource" "this" {
   depends_on = [
     resource.argocd_application.this,
