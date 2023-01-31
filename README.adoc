@@ -34,9 +34,7 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
-- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.clientsecret] (resource)
 - https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] (resource)
-- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.keycloak_passwords] (resource)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
 === Required Inputs
@@ -186,9 +184,7 @@ Description: n/a
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
-|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.clientsecret] |resource
 |https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] |resource
-|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.keycloak_passwords] |resource
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
 
