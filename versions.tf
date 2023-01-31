@@ -1,15 +1,15 @@
 terraform {
   required_providers {
     argocd = {
-      source = "oboukili/argocd"
+      source  = "oboukili/argocd"
       version = "~> 4"
     }
     utils = {
-      source = "cloudposse/utils"
+      source  = "cloudposse/utils"
       version = "~> 1"
     }
     random = {
-      source = "random"
+      source  = "random"
       version = "~> 3"
     }
   }

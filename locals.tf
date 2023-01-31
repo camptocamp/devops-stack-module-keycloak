@@ -9,13 +9,13 @@ locals {
         username = base64encode(var.database.username)
         password = base64encode(var.database.password)
         }) : {
-          # TODO doc that the fallback map (experimental ephemeral postgresql server) should never be used in production.
-          create   = true
-          vendor   = "postgres"
-          username = base64encode("postgres")
-          password = base64encode(random_password.db_password.0.result)
-          host     = "postgres-db"
-        }
+        # TODO doc that the fallback map (experimental ephemeral postgresql server) should never be used in production.
+        create   = true
+        vendor   = "postgres"
+        username = base64encode("postgres")
+        password = base64encode(random_password.db_password.0.result)
+        host     = "postgres-db"
+      }
       ingress = {
         enabled = true
         annotations = {
