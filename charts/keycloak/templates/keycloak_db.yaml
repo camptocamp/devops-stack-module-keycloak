@@ -39,7 +39,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: keycloak-{{ .Values.keycloak.database.host }}
+  name: {{ .Values.keycloak.database.host }}
   labels:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 spec:
