@@ -18,18 +18,23 @@ spec:
         app: keycloak-postgresql-db
     spec:
       containers:
-        - name: postgresql-db
-          image: postgres:13-alpine
-          env:
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-db-secret
-                  key: password
-            - name: PGDATA
-              value: /data/pgdata
-            - name: POSTGRES_DB
-              value: keycloak
+      - name: postgresql-db
+        image: postgres:13-alpine
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: password
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: password
+        - name: PGDATA
+          value: /data/pgdata
+        - name: POSTGRES_DB
+          value: keycloak
 ---
 apiVersion: v1
 kind: Service
