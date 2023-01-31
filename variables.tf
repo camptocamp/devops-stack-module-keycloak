@@ -3,18 +3,18 @@
 #######################
 
 variable "cluster_name" {
+  description = "Name given to the cluster. Value used for the ingress' URL of the application."
   type = string
 }
 
 variable "base_domain" {
+  description = "Base domain of the cluster. Value used for the ingress' URL of the application."
   type = string
 }
 
-variable "argocd" {
-  type = object({
-    namespace = string
-    domain    = string
-  })
+variable "argocd_namespace" {
+  description = "Namespace used by Argo CD where the Application and AppProject resources should be created."
+  type = string
 }
 
 variable "target_revision" {
@@ -24,20 +24,35 @@ variable "target_revision" {
 }
 
 variable "cluster_issuer" {
+  description = "SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files."
   type    = string
   default = "ca-issuer"
 }
 
 variable "namespace" {
+  description = "Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist."
   type    = string
   default = "keycloak"
 }
-
 
 variable "helm_values" {
   description = "Helm chart value overrides. They should be passed as a list of HCL structures."
   type        = any
   default     = []
+}
+
+variable "app_autosync" {
+  description = "Automated sync options for the Argo CD Application resource."
+  type = object({
+    allow_empty = optional(bool)
+    prune       = optional(bool)
+    self_heal   = optional(bool)
+  })
+  default = {
+    allow_empty = false
+    prune       = true
+    self_heal   = true
+  }
 }
 
 variable "dependency_ids" {
@@ -49,8 +64,13 @@ variable "dependency_ids" {
 ## Module variables
 #######################
 
-variable "keycloak" {
-  description = "Keycloak settings"
-  type        = any
-  default     = {}
+variable "database" {
+  description = "Keycloak external DB server info."
+  type = object({
+    vendor   = string
+    host     = string
+    username = string
+    password = string
+  })
+  default = null
 }

@@ -2,13 +2,15 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "random_password" "db_password" {
+  count  = var.database == null ? 1 : 0
+  length = 32
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
-    annotations = {
-      "devops-stack.io/argocd_namespace" = var.argocd.namespace
-    }
+    namespace = var.argocd_namespace
   }
 
   spec {
@@ -34,17 +36,16 @@ resource "argocd_project" "this" {
 }
 
 data "utils_deep_merge_yaml" "values" {
-  input = local.all_yaml
-  # TODO Re-add this when refactoring for the new model using helm_values
-  # input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
+  input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
 }
 
 resource "argocd_application" "operator" {
   metadata {
     name      = "keycloak-operator"
-    namespace = var.argocd.namespace
+    namespace = var.argocd_namespace
   }
 
+  # TODO Add automated sync variabilization here and on the next argocd application resource
   wait = true
 
   spec {
@@ -68,6 +69,14 @@ resource "argocd_application" "operator" {
         self_heal   = true
       }
 
+      retry {
+        backoff = {
+          duration     = ""
+          max_duration = ""
+        }
+        limit = "0"
+      }
+
       sync_options = [
         "CreateNamespace=true"
       ]
@@ -82,7 +91,7 @@ resource "argocd_application" "operator" {
 resource "argocd_application" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
+    namespace = var.argocd_namespace
   }
 
   spec {
@@ -109,13 +118,23 @@ resource "argocd_application" "this" {
         self_heal   = true
       }
 
+      retry {
+        backoff = {
+          duration     = ""
+          max_duration = ""
+        }
+        limit = "0"
+      }
+
       sync_options = [
         "CreateNamespace=true"
       ]
     }
   }
 
-  depends_on = [argocd_application.operator]
+  depends_on = [
+    argocd_application.operator
+  ]
 }
 
 resource "random_password" "clientsecret" {
