@@ -120,14 +120,6 @@ The following outputs are exported:
 ==== [[output_id]] <<output_id,id>>
 
 Description: n/a
-
-==== [[output_keycloak_users]] <<output_keycloak_users,keycloak_users>>
-
-Description: n/a
-
-==== [[output_oidc]] <<output_oidc,oidc>>
-
-Description: OIDC values
 // END_TF_DOCS
 // BEGIN_TF_TABLES
 
@@ -234,7 +226,5 @@ object({
 |===
 |Name |Description
 |[[output_id]] <<output_id,id>> |n/a
-|[[output_keycloak_users]] <<output_keycloak_users,keycloak_users>> |n/a
-|[[output_oidc]] <<output_oidc,oidc>> |OIDC values
 |===
 // END_TF_TABLES
