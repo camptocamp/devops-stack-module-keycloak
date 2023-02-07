@@ -7,6 +7,11 @@ resource "random_password" "db_password" {
   length = 32
 }
 
+resource "random_password" "admin_password" {
+  count  = var.admin_password == null ? 1 : 0
+  length = 32
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
