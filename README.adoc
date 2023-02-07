@@ -34,6 +34,7 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.admin_password] (resource)
 - https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] (resource)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
@@ -150,7 +151,11 @@ The following outputs are exported:
 
 ==== [[output_id]] <<output_id,id>>
 
-Description: n/a
+Description: ID to pass other modules in order to refer to this module as a dependency.
+
+==== [[output_keycloak_admin]] <<output_keycloak_admin,keycloak_admin>>
+
+Description: Credentials for the administrator user created on deployment.
 // END_TF_DOCS
 // BEGIN_TF_TABLES
 = Requirements
@@ -184,6 +189,7 @@ Description: n/a
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.admin_password] |resource
 |https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] |resource
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
@@ -291,6 +297,7 @@ object({
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
-|[[output_id]] <<output_id,id>> |n/a
+|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
+|[[output_keycloak_admin]] <<output_keycloak_admin,keycloak_admin>> |Credentials for the administrator user created on deployment.
 |===
 // END_TF_TABLES
