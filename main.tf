@@ -7,11 +7,6 @@ resource "random_password" "db_password" {
   length = 32
 }
 
-resource "random_password" "admin_password" {
-  count  = var.admin_password == null ? 1 : 0
-  length = 32
-}
-
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
@@ -138,12 +133,39 @@ resource "argocd_application" "this" {
   }
 
   depends_on = [
-    argocd_application.operator
+    resource.argocd_application.operator
+  ]
+}
+
+
+resource "null_resource" "wait_for_keycloak" {
+  # Until curl successfully completes the requested transfer, wait 10 seconds and retry for 180 seconds until timeout.
+  # --retry-all-errors makes curl retry even on non-transient HTTP errors (e.g. 404)
+  # -f makes curl fail on server errors
+  # -s prevents it from printing messages and the progress meter
+  # -o /dev/null discards the output message
+  # -k ignores self-signed SSL certificates
+  provisioner "local-exec" {
+    command = "curl --retry 180 -f --retry-all-errors --retry-delay 10 -s -o /dev/null -k 'https://keycloak.apps.${var.cluster_name}.${var.base_domain}'"
+  }
+
+  depends_on = [
+    resource.argocd_application.this,
+  ]
+}
+
+data "kubernetes_secret" "admin_password" {
+  metadata {
+    name      = "keycloak-initial-admin"
+    namespace = var.namespace
+  }
+  depends_on = [
+    resource.null_resource.wait_for_keycloak
   ]
 }
 
 resource "null_resource" "this" {
   depends_on = [
-    resource.argocd_application.this,
+    resource.null_resource.wait_for_keycloak
   ]
 }

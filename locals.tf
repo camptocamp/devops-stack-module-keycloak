@@ -16,10 +16,6 @@ locals {
         password = base64encode(random_password.db_password.0.result)
         host     = "keycloak-postgres-db"
       }
-      admin = {
-        username = "admin"
-        password = var.admin_password == null ? resource.random_password.admin_password.0.result : var.admin_password
-      }
       ingress = {
         enabled = true
         annotations = {

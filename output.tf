@@ -5,9 +5,6 @@ output "id" {
 
 output "keycloak_admin" {
   description = "Credentials for the administrator user created on deployment."
-  value = {
-    username = "admin"
-    password = var.admin_password == null ? resource.random_password.admin_password.0.result : var.admin_password
-  }
+  value       = data.kubernetes_secret.admin_password.data
   sensitive   = true
 }

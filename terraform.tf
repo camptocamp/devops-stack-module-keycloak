@@ -12,5 +12,13 @@ terraform {
       source  = "random"
       version = "~> 3"
     }
+    null = {
+      source  = "null"
+      version = "~> 3"
+    }
+    kubernetes = {
+      source  = "kubernetes"
+      version = "~> 2"
+    }
   }
 }
