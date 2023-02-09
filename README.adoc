@@ -1,3 +1,23 @@
+
+== Database configuration
+
+IMPORTANT: We do not recommend using the PostgreSQL deployment in a production environment. This is only for development purposes and the persistence of the database is not guaranteed.
+
+In a production environment, it is recommended to use an external SQL database and to give this module only the connection details. In that case, the default PostgreSQL _sidecar_ will not be deployed.
+
+== User configuration
+
+By default, the `oicd_bootstrap` module creates a basic realm containing a placeholder user that you can use out-of-the-box to authenticate to the other applications on the DevOps Stack.
+
+However, you can provide a list of users you want to be created and the submodule takes charge to create all the users.
+
+NOTE: All the fields are required for the creation of each user. Also, since the e-mail is a scope required in most of our apps, when the users are created, the e-mail is set as verified even though there is no process in place to verify it.
+
+IMPORTANT: All users will belong to the administrator group and will have high privileges in applications such as Argo CD.
+
+
+
+
 // BEGIN_TF_DOCS
 === Requirements
 
