@@ -33,14 +33,3 @@ spec:
       secretKeyRef:
         name: keycloak-initial-admin-custom
         key: password
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: keycloak-initial-admin-custom
-  labels:
-    {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
-type: Opaque
-data:
-  username: {{ .Values.keycloak.admin.username }}
-  password: {{ .Values.keycloak.admin.password }}
