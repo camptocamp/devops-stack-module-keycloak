@@ -5,6 +5,10 @@ The following requirements are needed by this module:
 
 - [[requirement_argocd]] <<requirement_argocd,argocd>> (~> 4)
 
+- [[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> (~> 2)
+
+- [[requirement_null]] <<requirement_null,null>> (~> 3)
+
 - [[requirement_random]] <<requirement_random,random>> (~> 3)
 
 - [[requirement_utils]] <<requirement_utils,utils>> (~> 1)
@@ -15,7 +19,9 @@ The following providers are used by this module:
 
 - [[provider_argocd]] <<provider_argocd,argocd>> (~> 4)
 
-- [[provider_null]] <<provider_null,null>>
+- [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (~> 2)
+
+- [[provider_null]] <<provider_null,null>> (~> 3)
 
 - [[provider_random]] <<provider_random,random>> (~> 3)
 
@@ -32,10 +38,11 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.operator] (resource)
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.this] (resource)
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] (resource)
-- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
-- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
-- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.admin_password] (resource)
+- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
+- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] (resource)
+- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] (resource)
 - https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] (resource)
+- https://registry.terraform.io/providers/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_password] (data source)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
 === Required Inputs
@@ -164,6 +171,8 @@ Description: Credentials for the administrator user created on deployment.
 |===
 |Name |Version
 |[[requirement_argocd]] <<requirement_argocd,argocd>> |~> 4
+|[[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> |~> 2
+|[[requirement_null]] <<requirement_null,null>> |~> 3
 |[[requirement_random]] <<requirement_random,random>> |~> 3
 |[[requirement_utils]] <<requirement_utils,utils>> |~> 1
 |===
@@ -174,7 +183,8 @@ Description: Credentials for the administrator user created on deployment.
 |===
 |Name |Version
 |[[provider_argocd]] <<provider_argocd,argocd>> |~> 4
-|[[provider_null]] <<provider_null,null>> |n/a
+|[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |~> 2
+|[[provider_null]] <<provider_null,null>> |~> 3
 |[[provider_random]] <<provider_random,random>> |~> 3
 |[[provider_utils]] <<provider_utils,utils>> |~> 1
 |===
@@ -187,10 +197,11 @@ Description: Credentials for the administrator user created on deployment.
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.operator] |resource
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.this] |resource
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] |resource
-|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
-|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
-|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.admin_password] |resource
+|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] |resource
+|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] |resource
+|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] |resource
 |https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] |resource
+|https://registry.terraform.io/providers/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_password] |data source
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
 
