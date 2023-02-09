@@ -26,18 +26,18 @@ spec:
   - name: KEYCLOAK_ADMIN
     valueFrom:
       secretKeyRef:
-        name: keycloak-initial-admin
+        name: keycloak-initial-admin-custom
         key: username
   - name: KEYCLOAK_ADMIN_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: keycloak-initial-admin
+        name: keycloak-initial-admin-custom
         key: password
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: keycloak-initial-admin
+  name: keycloak-initial-admin-custom
   labels:
     {{- include "devops-stack-module-keycloak.labels" $ | indent 4 }}
 type: Opaque
