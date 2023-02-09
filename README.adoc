@@ -125,7 +125,7 @@ Default: `"ca-issuer"`
 
 ==== [[input_database]] <<input_database,database>>
 
-Description: Keycloak external DB server info.
+Description: Keycloak external database server configuration.
 
 Type:
 [source,hcl]
@@ -142,7 +142,7 @@ Default: `null`
 
 ==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 
-Description: n/a
+Description: IDs of the other modules on which this module depends on.
 
 Type: `map(string)`
 
@@ -281,7 +281,7 @@ object({
 |yes
 
 |[[input_database]] <<input_database,database>>
-|Keycloak external DB server info.
+|Keycloak external database server configuration.
 |
 
 [source]
@@ -298,7 +298,7 @@ object({
 |no
 
 |[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
-|n/a
+|IDs of the other modules on which this module depends on.
 |`map(string)`
 |`{}`
 |no
