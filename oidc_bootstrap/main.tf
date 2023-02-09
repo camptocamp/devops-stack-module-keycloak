@@ -3,20 +3,20 @@ resource "null_resource" "dependencies" {
 }
 
 resource "keycloak_realm" "devops_stack" {
-  enabled           = true
-  realm             = "devops-stack"
-  display_name      = "DevOps Stack"
-  display_name_html = "<img width='200px' src='https://raw.githubusercontent.com/camptocamp/devops-stack/gh-pages/images/devops-stack-logo_light_by_c2c_black.png' alt='DevOps Stack Logo'/>"
-
-  login_theme = "keycloak"
-
-  access_code_lifespan = "1h"
-
-  ssl_required    = "external"
-  password_policy = "upperCase(1) and length(8) and forceExpiredPasswordChange(365) and notUsername"
+  enabled = true
+  realm   = "devops-stack"
   attributes = {
     terraform = "true"
   }
+
+  display_name      = "DevOps Stack"
+  display_name_html = "<img width='200px' src='https://raw.githubusercontent.com/camptocamp/devops-stack/gh-pages/images/devops-stack-logo_light_by_c2c_black.png' alt='DevOps Stack Logo'/>"
+  # TODO Verify if we need to set the theme here or not
+
+  login_with_email_allowed = true
+  access_code_lifespan     = "1h"
+  ssl_required             = "external"
+  password_policy          = "upperCase(1) and length(8) and forceExpiredPasswordChange(365) and notUsername"
 
   # TODO Verify if we need these settings as it seems most of them (the `headers` mainly) are already defaults on Keycloak
   security_defenses {
@@ -58,19 +58,13 @@ resource "keycloak_openid_client" "devops_stack" {
   realm_id = resource.keycloak_realm.devops_stack.id
 
   name          = "DevOps Stack Applications"
-  client_id     = "devops-stack-applications"
+  client_id     = local.oidc.client_id
   client_secret = resource.random_password.client_secret.result
 
   access_type                  = "CONFIDENTIAL"
   standard_flow_enabled        = true
   direct_access_grants_enabled = true
-  valid_redirect_uris = [
-    "*"
-  ]
-  # TODO Add a variable to set the redirect uris instead of using a wildcard
-  # valid_redirect_uris = [
-  #   "https://*.apps.${var.cluster_name}.${var.base_domain}/*"
-  # ]
+  valid_redirect_uris          = var.oidc_redirect_uris
 }
 
 resource "keycloak_openid_client_scope" "devops_stack" {
@@ -115,6 +109,10 @@ resource "keycloak_user" "devops_stack_admin" {
   last_name      = "DevOps Stack"
   email          = "devopsadmin@devops-stack.io"
   email_verified = true
+
+  attributes = {
+    terraform = "true"
+  }
 }
 
 resource "keycloak_user_groups" "devops_stack_admin" {

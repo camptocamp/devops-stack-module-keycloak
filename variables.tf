@@ -56,8 +56,9 @@ variable "app_autosync" {
 }
 
 variable "dependency_ids" {
-  type    = map(string)
-  default = {}
+  description = "IDs of the other modules on which this module depends on."
+  type        = map(string)
+  default     = {}
 }
 
 #######################
@@ -65,7 +66,7 @@ variable "dependency_ids" {
 #######################
 
 variable "database" {
-  description = "Keycloak external DB server info."
+  description = "Keycloak external database server configuration."
   type = object({
     vendor   = string
     host     = string

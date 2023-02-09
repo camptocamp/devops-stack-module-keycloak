@@ -3,8 +3,9 @@ resource "null_resource" "dependencies" {
 }
 
 resource "random_password" "db_password" {
-  count  = var.database == null ? 1 : 0
-  length = 32
+  count   = var.database == null ? 1 : 0
+  length  = 32
+  special = false
 }
 
 resource "argocd_project" "this" {
@@ -45,8 +46,7 @@ resource "argocd_application" "operator" {
     namespace = var.argocd_namespace
   }
 
-  # TODO Add automated sync variabilization here and on the next argocd application resource
-  wait = true
+  wait = var.app_autosync == { "allow_empty" = tobool(null), "prune" = tobool(null), "self_heal" = tobool(null) } ? false : true
 
   spec {
     project = argocd_project.this.metadata.0.name
@@ -63,11 +63,7 @@ resource "argocd_application" "operator" {
     }
 
     sync_policy {
-      automated = {
-        allow_empty = false
-        prune       = true
-        self_heal   = true
-      }
+      automated = var.app_autosync
 
       retry {
         backoff = {
@@ -94,6 +90,13 @@ resource "argocd_application" "this" {
     namespace = var.argocd_namespace
   }
 
+  timeouts {
+    create = "15m"
+    delete = "15m"
+  }
+
+  wait = var.app_autosync == { "allow_empty" = tobool(null), "prune" = tobool(null), "self_heal" = tobool(null) } ? false : true
+
   spec {
     project = argocd_project.this.metadata.0.name
 
@@ -112,11 +115,7 @@ resource "argocd_application" "this" {
     }
 
     sync_policy {
-      automated = {
-        allow_empty = false
-        prune       = true
-        self_heal   = true
-      }
+      automated = var.app_autosync
 
       retry {
         backoff = {
@@ -133,7 +132,7 @@ resource "argocd_application" "this" {
   }
 
   depends_on = [
-    resource.argocd_application.operator
+    resource.argocd_application.operator,
   ]
 }
 
@@ -160,12 +159,12 @@ data "kubernetes_secret" "admin_password" {
     namespace = var.namespace
   }
   depends_on = [
-    resource.null_resource.wait_for_keycloak
+    resource.null_resource.wait_for_keycloak,
   ]
 }
 
 resource "null_resource" "this" {
   depends_on = [
-    resource.null_resource.wait_for_keycloak
+    resource.null_resource.wait_for_keycloak,
   ]
 }
