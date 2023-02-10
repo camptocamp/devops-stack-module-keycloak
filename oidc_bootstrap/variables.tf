@@ -28,21 +28,6 @@ variable "dependency_ids" {
 ## Module variables
 #######################
 
-variable "keycloak_admin" {
-  description = "Username and password for the default admistrator user of the Keycloak instance."
-  type = object({
-    username = string
-    password = string
-  })
-  sensitive = true
-}
-
-variable "tls_insecure_skip_verify" {
-  description = "Ignore insecure connections when the Terraform provider connects to the Keycloak instance."
-  type        = bool
-  default     = false
-}
-
 variable "oidc_redirect_uris" {
   description = "List of URIs where the authentication server is allowed to return during the authentication flow."
   type        = list(string)

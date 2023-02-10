@@ -3,8 +3,8 @@ output "id" {
   value       = resource.null_resource.this.id
 }
 
-output "keycloak_admin" {
+output "admin_credentials" {
   description = "Credentials for the administrator user of the master realm created on deployment."
-  value       = data.kubernetes_secret.admin_password.data
+  value       = data.kubernetes_secret.admin_credentials.data
   sensitive   = true
 }

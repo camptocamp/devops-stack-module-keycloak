@@ -153,7 +153,7 @@ resource "null_resource" "wait_for_keycloak" {
   ]
 }
 
-data "kubernetes_secret" "admin_password" {
+data "kubernetes_secret" "admin_credentials" {
   metadata {
     name      = "keycloak-initial-admin"
     namespace = var.namespace
