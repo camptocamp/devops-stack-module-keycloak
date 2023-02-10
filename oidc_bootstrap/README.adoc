@@ -4,7 +4,7 @@ A https://devops-stack.io[DevOps Stack] module to bootstrap a realm, an administ
 
 This module allows you to have a working authentication provider for the DevOps Stack without having to configure Keycloak manually.
 
-IMPORTANT: Because the main use of this module is to have a working Keycloak instance in a development environment, it provides a sensible configuration with some secure enough defaults. However, *it is not recommended to be used in a production environment*. In that case, we recommend you use this module as an example. Simply take a look at the code and the https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs[provider documentation] to get an idea on how to use it to manage you Keycloak instance.
+IMPORTANT: Because the main use of this module is to have a working Keycloak instance in a development environment, it provides a sensible configuration with some secure enough defaults. However, *it is not recommended to be used in a production environment*. For that purpose, we recommend you simply use this module as an example. Take a look at the code and read the https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs[provider's documentation] to get an idea on how it can be used manage your Keycloak instance.
 
 == Usage
 
@@ -30,7 +30,7 @@ provider "keycloak" {
 }
 ----
 
-NOTE: The argument `initial_login` absolutely needs to be set as `false`, otherwise Terraform will try to connect to Keycloak before it is deployed. The argument `tls_insecure_skip_verify` needs to be set as `false` only on testing environments when using self-signed SSL certificates.
+NOTE: The argument `initial_login` absolutely needs to be set as `false`, otherwise Terraform will try to connect to Keycloak before it is deployed. The argument `tls_insecure_skip_verify` needs to be set as `false` only on testing environments, when using self-signed SSL certificates.
 
 After setting up the provider, you can then bootstrap the authentication configuration like this:
 
@@ -144,7 +144,7 @@ locals {
 
 ==== `module.keycloak`
 
-Obviously, this module requires that `module.keycloak` is deployed before, because in needs a working Keycloak instance in which to create its resources. 
+Obviously, this module must be deployed after `module.keycloak`, because it needs a working Keycloak instance where to create its resources. 
 
 // BEGIN_TF_DOCS
 === Requirements

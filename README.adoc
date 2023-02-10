@@ -5,12 +5,13 @@
 A https://devops-stack.io[DevOps Stack] module to deploy and configure https://www.keycloak.org/[Keycloak] as an OIDC provider. It is meant to be used mainly for testing purposes when deploying a local cluster using https://github.com/camptocamp/devops-stack-module-cluster-kind[KinD].
 
 This repository contains 2 charts:
+
   - `keycloak-operator`: contains the CRDs and the other Kubernetes resources in order to install the operator as recommended for a vanilla Kubernetes installation in Keycloak's https://www.keycloak.org/operator/installation[documentation];
   - `keycloak`: installs Keycloak and associated resources (such as an ingress) as well as PostgreSQL deployment (optional if you provide the credentials for an external database).
 
 The Keycloak version installed is the *20.0.3*. https://www.keycloak.org/guides[Here] you will find the official guides of Keycloak, namely https://www.keycloak.org/guides#operator[the ones used for this module] in the _Operator_ section.
 
-Besides this module, we developed a xref:./oidc_bootstrap/README.adoc[submodule] to bootstrap a realm, groups and users so you can be up an running as fast as possible. That documentation also contains more information about the output containing the OIDC configuration that is passed to the other modules.
+Besides this module, we developed a xref:./oidc_bootstrap/README.adoc[submodule] to bootstrap a realm, groups and users so you can be up an running as fast as possible.
 
 == Usage
 
