@@ -1,0 +1,4 @@
+* xref:ROOT:README.adoc[Home]
+* xref:ROOT:oidc_bootstrap/README.adoc[Realm Bootstrap Submodule]
+* https://github.com/camptocamp/devops-stack-module-keycloak[Repository,window=_blank]
+* xref:ROOT:ROOT:index.adoc[_Return to DevOps Stack docs_]
