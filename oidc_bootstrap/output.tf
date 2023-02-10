@@ -10,8 +10,11 @@ output "oidc" {
 }
 
 # TODO Add username output just in case
-output "devops_admin_password" {
-  value     = resource.random_password.devops_stack_admin.result
+output "devops_stack_users_passwords" {
+  description = "TODO"
+  value     = { 
+    for key, value in var.user_map : value.username => resource.random_password.devops_stack_users[key].result
+  }
   sensitive = true
 }
 # TODO Add dependency ids output and variable as well as main resources

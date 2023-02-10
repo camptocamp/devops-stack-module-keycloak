@@ -51,18 +51,20 @@ variable "oidc_redirect_uris" {
   ]
 }
 
-variable "user_list" {
+variable "user_map" {
   description = "List of users to be added to the DevOps Stack Realm. Note that all fields are mandatory."
-  type = list(object({
+  type = map(object({
     username   = string
     email      = string
     first_name = string
     last_name  = string
   }))
-  default = [{
-    username   = "devops-admin"
-    email      = "devops-admin@devops-stack.io"
-    first_name = "Administrator"
-    last_name  = "DevOps Stack"
-  }]
+  default = { # TODO Decide what we name the default user, just a matter of style
+    devopsadmin = {
+      username   = "devopsadmin"
+      email      = "devopsadmin@devops-stack.io"
+      first_name = "Administrator"
+      last_name  = "DevOps Stack"
+    }
+  }
 }

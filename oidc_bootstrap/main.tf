@@ -92,22 +92,25 @@ resource "keycloak_group" "devops_stack_admins" {
   name     = "devops-stack-admins"
 }
 
-resource "random_password" "devops_stack_admin" {
+resource "random_password" "devops_stack_users" {
+  for_each = var.user_map
   length  = 32
   special = false
 }
 
-resource "keycloak_user" "devops_stack_admin" {
+resource "keycloak_user" "devops_stack_users" {
+  for_each = var.user_map
+
   realm_id = resource.keycloak_realm.devops_stack.id
 
-  username = "devopsadmin"
+  username = each.value.username
   initial_password {
-    value = resource.random_password.devops_stack_admin.result
+    value = resource.random_password.devops_stack_users[each.key].result
   }
 
-  first_name     = "Administrator"
-  last_name      = "DevOps Stack"
-  email          = "devopsadmin@devops-stack.io"
+  first_name     = each.value.first_name
+  last_name      = each.value.last_name
+  email          = each.value.email
   email_verified = true
 
   attributes = {
@@ -115,10 +118,12 @@ resource "keycloak_user" "devops_stack_admin" {
   }
 }
 
-resource "keycloak_user_groups" "devops_stack_admin" {
-  realm_id = resource.keycloak_realm.devops_stack.id
-  user_id  = resource.keycloak_user.devops_stack_admin.id
+resource "keycloak_user_groups" "devops_stack_admins" {
+  for_each = var.user_map
 
+  user_id  = resource.keycloak_user.devops_stack_users[each.key].id
+  
+  realm_id = resource.keycloak_realm.devops_stack.id
   group_ids = [
     resource.keycloak_group.devops_stack_admins.id
   ]
@@ -128,8 +133,7 @@ resource "null_resource" "this" {
   depends_on = [
     resource.keycloak_realm.devops_stack,
     resource.keycloak_group.devops_stack_admins,
-    resource.keycloak_user.devops_stack_admin,
-    resource.keycloak_user_groups.devops_stack_admin,
+    resource.keycloak_user_groups.devops_stack_admins,
   ]
 }
 
