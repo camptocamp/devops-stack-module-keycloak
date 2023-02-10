@@ -73,6 +73,14 @@ resource "keycloak_openid_client_scope" "devops_stack" {
   include_in_token_scope = true
 }
 
+resource "keycloak_openid_group_membership_protocol_mapper" "devops_stack" {
+  realm_id        = resource.keycloak_realm.devops_stack.id
+  client_scope_id = resource.keycloak_openid_client_scope.devops_stack.id
+  name            = "groups"
+  claim_name      = "groups"
+  full_path       = false
+}
+
 resource "keycloak_openid_client_default_scopes" "client_default_scopes" {
   realm_id  = resource.keycloak_realm.devops_stack.id
   client_id = resource.keycloak_openid_client.devops_stack.id
