@@ -31,6 +31,7 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client[keycloak_openid_client.devops_stack] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] (resource)
@@ -184,6 +185,7 @@ Description: Object containing multiple OIDC configuration values.
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client[keycloak_openid_client.devops_stack] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] |resource
