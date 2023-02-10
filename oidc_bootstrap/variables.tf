@@ -59,7 +59,7 @@ variable "user_map" {
     first_name = string
     last_name  = string
   }))
-  default = { # TODO Decide what we name the default user, just a matter of style
+  default = {
     devopsadmin = {
       username   = "devopsadmin"
       email      = "devopsadmin@devops-stack.io"

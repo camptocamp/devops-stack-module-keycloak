@@ -17,7 +17,9 @@ resource "keycloak_realm" "devops_stack" {
   ssl_required             = "external"
   password_policy          = "upperCase(1) and length(8) and forceExpiredPasswordChange(365) and notUsername"
 
-  # TODO Verify if we need these settings as it seems most of them (the `headers` mainly) are already defaults on Keycloak
+  # These settings are the ones on the example on the Terraform provider. We reused them as they seemed like sensible 
+  # defaults. However, we should still verify if they are really needed, as it seems most of them (the `headers` mainly)
+  # are already the defaults on Keycloak.
   security_defenses {
     headers {
       x_frame_options                     = "DENY"
@@ -39,7 +41,8 @@ resource "keycloak_realm" "devops_stack" {
     }
   }
 
-  # TODO Discuss adding the meta-argument lifecycle with ignore_changes to avoid deleting changes done on the WebUI
+  # TODO Discuss the pertinence of adding the meta-argument lifecycle with ignore_changes to avoid overwriting changes
+  # done on the WebUI, but only for the realm.
 
   depends_on = [
     resource.null_resource.dependencies
