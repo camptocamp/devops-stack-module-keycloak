@@ -11,7 +11,7 @@ output "oidc" {
 
 output "devops_stack_users_passwords" {
   description = "Map containing the credentials of each created user."
-  value     = { 
+  value = {
     for key, value in var.user_map : value.username => resource.random_password.devops_stack_users[key].result
   }
   sensitive = true

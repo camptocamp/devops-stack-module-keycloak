@@ -93,8 +93,8 @@ resource "keycloak_group" "devops_stack_admins" {
 
 resource "random_password" "devops_stack_users" {
   for_each = var.user_map
-  length  = 32
-  special = false
+  length   = 32
+  special  = false
 }
 
 resource "keycloak_user" "devops_stack_users" {
@@ -120,8 +120,8 @@ resource "keycloak_user" "devops_stack_users" {
 resource "keycloak_user_groups" "devops_stack_admins" {
   for_each = var.user_map
 
-  user_id  = resource.keycloak_user.devops_stack_users[each.key].id
-  
+  user_id = resource.keycloak_user.devops_stack_users[each.key].id
+
   realm_id = resource.keycloak_realm.devops_stack.id
   group_ids = [
     resource.keycloak_group.devops_stack_admins.id
