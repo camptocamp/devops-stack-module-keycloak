@@ -182,7 +182,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 
 ==== [[output_keycloak_admin]] <<output_keycloak_admin,keycloak_admin>>
 
-Description: Credentials for the administrator user created on deployment.
+Description: Credentials for the administrator user of the master realm created on deployment.
 // END_TF_DOCS
 // BEGIN_TF_TABLES
 = Requirements
@@ -329,6 +329,6 @@ object({
 |===
 |Name |Description
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
-|[[output_keycloak_admin]] <<output_keycloak_admin,keycloak_admin>> |Credentials for the administrator user created on deployment.
+|[[output_keycloak_admin]] <<output_keycloak_admin,keycloak_admin>> |Credentials for the administrator user of the master realm created on deployment.
 |===
 // END_TF_TABLES
