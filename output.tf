@@ -4,7 +4,7 @@ output "id" {
 }
 
 output "keycloak_admin" {
-  description = "Credentials for the administrator user created on deployment."
+  description = "Credentials for the administrator user of the master realm created on deployment."
   value       = data.kubernetes_secret.admin_password.data
   sensitive   = true
 }

@@ -11,7 +11,6 @@ resource "keycloak_realm" "devops_stack" {
 
   display_name      = "DevOps Stack"
   display_name_html = "<img width='200px' src='https://raw.githubusercontent.com/camptocamp/devops-stack/gh-pages/images/devops-stack-logo_light_by_c2c_black.png' alt='DevOps Stack Logo'/>"
-  # TODO Verify if we need to set the theme here or not
 
   login_with_email_allowed = true
   access_code_lifespan     = "1h"
@@ -136,5 +135,3 @@ resource "null_resource" "this" {
     resource.keycloak_user_groups.devops_stack_admins,
   ]
 }
-
-# TODO Variabilize the users and realms to be created or leave it as is to only bootstrap the admin user
