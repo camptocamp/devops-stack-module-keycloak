@@ -32,12 +32,12 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] (resource)
-- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_admin] (resource)
-- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admin] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] (resource)
 - https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
 - https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] (resource)
 - https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.client_secret] (resource)
-- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.devops_stack_admin] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.devops_stack_users] (resource)
 
 === Required Inputs
 
@@ -110,14 +110,14 @@ Type: `bool`
 
 Default: `false`
 
-==== [[input_user_list]] <<input_user_list,user_list>>
+==== [[input_user_map]] <<input_user_map,user_map>>
 
 Description: List of users to be added to the DevOps Stack Realm. Note that all fields are mandatory.
 
 Type:
 [source,hcl]
 ----
-list(object({
+map(object({
     username   = string
     email      = string
     first_name = string
@@ -128,23 +128,23 @@ list(object({
 Default:
 [source,json]
 ----
-[
-  {
-    "email": "devops-admin@devops-stack.io",
+{
+  "devopsadmin": {
+    "email": "devopsadmin@devops-stack.io",
     "first_name": "Administrator",
     "last_name": "DevOps Stack",
-    "username": "devops-admin"
+    "username": "devopsadmin"
   }
-]
+}
 ----
 
 === Outputs
 
 The following outputs are exported:
 
-==== [[output_devops_admin_password]] <<output_devops_admin_password,devops_admin_password>>
+==== [[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>>
 
-Description: TODO Add username output just in case
+Description: TODO
 
 ==== [[output_id]] <<output_id,id>>
 
@@ -185,12 +185,12 @@ Description: Object containing multiple OIDC configuration values.
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] |resource
-|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_admin] |resource
-|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admin] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] |resource
 |https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] |resource
 |https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] |resource
 |https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.client_secret] |resource
-|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.devops_stack_admin] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.devops_stack_users] |resource
 |===
 
 = Inputs
@@ -257,13 +257,13 @@ object({
 |`false`
 |no
 
-|[[input_user_list]] <<input_user_list,user_list>>
+|[[input_user_map]] <<input_user_map,user_map>>
 |List of users to be added to the DevOps Stack Realm. Note that all fields are mandatory.
 |
 
 [source]
 ----
-list(object({
+map(object({
     username   = string
     email      = string
     first_name = string
@@ -275,14 +275,14 @@ list(object({
 
 [source]
 ----
-[
-  {
-    "email": "devops-admin@devops-stack.io",
+{
+  "devopsadmin": {
+    "email": "devopsadmin@devops-stack.io",
     "first_name": "Administrator",
     "last_name": "DevOps Stack",
-    "username": "devops-admin"
+    "username": "devopsadmin"
   }
-]
+}
 ----
 
 |no
@@ -294,7 +294,7 @@ list(object({
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
-|[[output_devops_admin_password]] <<output_devops_admin_password,devops_admin_password>> |TODO Add username output just in case
+|[[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>> |TODO
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
 |[[output_oidc]] <<output_oidc,oidc>> |Object containing multiple OIDC configuration values.
 |===
