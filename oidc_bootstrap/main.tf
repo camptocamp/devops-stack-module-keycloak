@@ -3,12 +3,12 @@ resource "null_resource" "dependencies" {
 }
 
 resource "keycloak_realm" "devops_stack" {
-  realm   = "devops-stack"
+  realm = "devops-stack"
   attributes = {
     terraform = "true"
   }
-  display_name      = "DevOps Stack"
-  display_name_html = "<img width='200px' src='https://raw.githubusercontent.com/camptocamp/devops-stack/gh-pages/images/devops-stack-logo_light_by_c2c_black.png' alt='DevOps Stack Logo'/>"
+  display_name             = "DevOps Stack"
+  display_name_html        = "<img width='200px' src='https://raw.githubusercontent.com/camptocamp/devops-stack/gh-pages/images/devops-stack-logo_light_by_c2c_black.png' alt='DevOps Stack Logo'/>"
   login_with_email_allowed = true
   access_code_lifespan     = "1h"
   ssl_required             = "external"
@@ -51,10 +51,10 @@ resource "random_password" "client_secret" {
 }
 
 resource "keycloak_openid_client" "devops_stack" {
-  realm_id = resource.keycloak_realm.devops_stack.id
-  name          = "DevOps Stack Applications"
-  client_id     = local.oidc.client_id
-  client_secret = resource.random_password.client_secret.result
+  realm_id                     = resource.keycloak_realm.devops_stack.id
+  name                         = "DevOps Stack Applications"
+  client_id                    = local.oidc.client_id
+  client_secret                = resource.random_password.client_secret.result
   access_type                  = "CONFIDENTIAL"
   standard_flow_enabled        = true
   direct_access_grants_enabled = true
@@ -120,7 +120,7 @@ resource "keycloak_user" "devops_stack_users" {
 resource "keycloak_user_groups" "devops_stack_admins" {
   for_each = var.user_map
 
-  user_id = resource.keycloak_user.devops_stack_users[each.key].id
+  user_id  = resource.keycloak_user.devops_stack_users[each.key].id
   realm_id = resource.keycloak_realm.devops_stack.id
   group_ids = [
     resource.keycloak_group.devops_stack_admins.id
