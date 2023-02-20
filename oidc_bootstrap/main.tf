@@ -68,6 +68,7 @@ resource "keycloak_group" "devops_stack_admins" {
 
 resource "random_password" "devops_stack_users" {
   for_each = var.user_map
+
   length   = 32
   special  = false
 }
