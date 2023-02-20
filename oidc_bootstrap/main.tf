@@ -3,7 +3,7 @@ resource "null_resource" "dependencies" {
 }
 
 resource "keycloak_realm" "devops_stack" {
-  realm = "devops-stack"
+  realm                    = "devops-stack"
   display_name             = "DevOps Stack"
   display_name_html        = "<img width='200px' src='https://raw.githubusercontent.com/camptocamp/devops-stack/gh-pages/images/devops-stack-logo_light_by_c2c_black.png' alt='DevOps Stack Logo'/>"
   login_with_email_allowed = true
@@ -69,8 +69,8 @@ resource "keycloak_group" "devops_stack_admins" {
 resource "random_password" "devops_stack_users" {
   for_each = var.user_map
 
-  length   = 32
-  special  = false
+  length  = 32
+  special = false
 }
 
 resource "keycloak_user" "devops_stack_users" {
