@@ -144,7 +144,7 @@ resource "null_resource" "wait_for_keycloak" {
   # -o /dev/null discards the output message
   # -k ignores self-signed SSL certificates
   provisioner "local-exec" {
-    command = "curl -f --retry 20 --retry-max-time 180 --retry-delay 10 -s -o /dev/null -k 'https://keycloak.apps.${var.cluster_name}.${var.base_domain}'"
+    command = "curl --retry 20 --retry-max-time 180 --retry-delay 10 --retry-all-errors -f -s -o /dev/null -k 'https://keycloak.apps.${var.cluster_name}.${var.base_domain}'"
   }
 
   depends_on = [
