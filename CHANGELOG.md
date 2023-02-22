@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.0-alpha.1...v1.0.0) (2023-02-22)
+
+
+### Features
+
+* upgrade operator and revamp module ([#6](https://github.com/camptocamp/devops-stack-module-keycloak/issues/6)) ([d8f2232](https://github.com/camptocamp/devops-stack-module-keycloak/commit/d8f223294068aae554929e25fd0046aeadb1cf2f))
+
 ## 1.0.0-alpha.1 (2022-11-18)
 
 
