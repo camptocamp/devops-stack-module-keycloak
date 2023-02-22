@@ -1,0 +1,7 @@
+---
+name: "keycloak"
+title: "Keycloak Module"
+version: true
+start_page: README.adoc
+nav:
+  - "modules/ROOT/nav.adoc"

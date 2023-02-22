@@ -1,0 +1,416 @@
+= OIDC Bootstrap
+
+A https://devops-stack.io[DevOps Stack] module to bootstrap a realm, an administrators group with one or more users and an OIDC client in order to use https://www.keycloak.org/[Keycloak] as an OIDC provider.
+
+This module allows you to have a working authentication provider for the DevOps Stack without having to configure Keycloak manually.
+
+IMPORTANT: Because the main use of this module is to have a working Keycloak instance in a development environment, it provides a sensible configuration with some secure enough defaults. However, *it is not recommended to be used in a production environment*. For that purpose, we recommend you simply use this module as an example. Take a look at the code and read the https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs[provider's documentation] to get an idea on how it can be used manage your Keycloak instance.
+
+== Usage
+
+After deploying Keycloak using the main module on this repository, first you need to add the provider configuration necessary on your root module:
+
+[source,terraform]
+----
+terraform {
+  required_providers {
+    keycloak = {
+      source = "mrparkers/keycloak"
+    }
+  }
+}
+
+provider "keycloak" {
+  client_id                = "admin-cli"
+  username                 = module.keycloak.admin_credentials.username
+  password                 = module.keycloak.admin_credentials.password
+  url                      = "https://keycloak.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}"
+  initial_login            = false # Do no try to setup the provider before Keycloak is provisioned.
+  tls_insecure_skip_verify = true # Since we are in a testing environment, do not verify the authenticity of SSL certificates.
+}
+----
+
+NOTE: The argument `initial_login` absolutely needs to be set as `false`, otherwise Terraform will try to connect to Keycloak before it is deployed. The argument `tls_insecure_skip_verify` needs to be set as `false` only on testing environments, when using self-signed SSL certificates.
+
+After setting up the provider, you can then bootstrap the authentication configuration like this:
+
+[source, terraform]
+----
+module "oidc" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-keycloak.git//oidc_bootstrap?ref=<RELEASE>"
+
+  cluster_name = local.cluster_name
+  base_domain  = format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))
+
+  dependency_ids = {
+    keycloak = module.keycloak.id
+  }
+}
+----
+
+=== User Configuration
+
+By default, the `oicd_bootstrap` module creates a basic realm containing a placeholder user that you can use out-of-the-box to authenticate to the other applications on the DevOps Stack.
+
+However, you can provide a map of desired users and the submodule creates them all with an initial password that can then be changed.
+
+Simply declare the module as follows:
+
+[source, terraform]
+----
+module "oidc" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-keycloak.git//oidc_bootstrap?ref=<RELEASE>"
+
+  cluster_name = local.cluster_name
+  base_domain  = format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))
+
+  user_map = {
+    johndoe = {
+      username   = "johndoe"
+      first_name = "John"
+      last_name  = "Doe"
+      email      = "john.doe@example.com"
+    }
+    janedoe = {
+      username   = "janedoe"
+      first_name = "Jane"
+      last_name  = "Doe"
+      email      = "jane.doe@example.com"
+    }
+  }
+
+  dependency_ids = {
+    keycloak = module.keycloak.id
+  }
+}
+----
+
+NOTE: All the fields on each user are required. Besides, since the e-mail is a scope required by most of our apps, the e-mail is automatically set as verified when the users are created.
+
+IMPORTANT: All users will belong to the administrators group and will have high privileges in applications such as Argo CD.
+
+The module contains an output called `devops_stack_users_passwords` where you can get a map containing every username and their respective initial password.
+
+=== OIDC Configuration
+
+By default, the OIDC client is configured to allow returning to any URL after the authentication is successful. If you prefer, you can restrict only the redirect URIs to a list of domains using the input variable `oidc_redirect_uris`:
+
+[source, terraform]
+----
+module "oidc" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-keycloak.git//oidc_bootstrap?ref=<RELEASE>"
+
+  cluster_name = local.cluster_name
+  base_domain  = format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))
+
+  oidc_redirec_uris = [
+    "https://argocd.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}/auth/callback",
+    "https://grafana.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}/login/generic_oauth",
+    "https://prometheus.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}/oauth2/callback",
+    "https://thanos-query.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}/oauth2/callback",
+    "https://thanos-bucketweb.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}/oauth2/callback",
+    "https://alertmanager.apps.${local.cluster_name}.${format("%s.nip.io", replace(module.ingress.external_ip, ".", "-"))}/oauth2/callback",
+  ]
+
+  dependency_ids = {
+    keycloak = module.keycloak.id
+  }
+}
+----
+
+The module provides and output called `oidc` containing the OIDC configuration that is to be passed on to other modules. This output is an object that outputs the content of `local.oidc`:
+
+[source, terraform]
+----
+locals {
+  oidc = {
+    issuer_url    = format("https://keycloak.apps.%s.%s/realms/devops-stack", var.cluster_name, var.base_domain)
+    oauth_url     = format("https://keycloak.apps.%s.%s/realms/devops-stack/protocol/openid-connect/auth", var.cluster_name, var.base_domain)
+    token_url     = format("https://keycloak.apps.%s.%s/realms/devops-stack/protocol/openid-connect/token", var.cluster_name, var.base_domain)
+    api_url       = format("https://keycloak.apps.%s.%s/realms/devops-stack/protocol/openid-connect/userinfo", var.cluster_name, var.base_domain)
+    client_id     = "devops-stack-applications"
+    client_secret = resource.random_password.client_secret.result
+    oauth2_proxy_extra_args = var.cluster_issuer == "ca-issuer" ? [
+      "--insecure-oidc-skip-issuer-verification=true",
+      "--ssl-insecure-skip-verify=true",
+    ] : []
+  }
+}
+----
+
+== Technical Reference
+
+=== Dependencies
+
+==== `module.keycloak`
+
+Obviously, this module must be deployed after `module.keycloak`, because it needs a working Keycloak instance where to create its resources. 
+
+// BEGIN_TF_DOCS
+=== Requirements
+
+The following requirements are needed by this module:
+
+- [[requirement_keycloak]] <<requirement_keycloak,keycloak>> (~> 4)
+
+- [[requirement_null]] <<requirement_null,null>> (~> 3)
+
+- [[requirement_random]] <<requirement_random,random>> (~> 3)
+
+=== Providers
+
+The following providers are used by this module:
+
+- [[provider_keycloak]] <<provider_keycloak,keycloak>> (~> 4)
+
+- [[provider_null]] <<provider_null,null>> (~> 3)
+
+- [[provider_random]] <<provider_random,random>> (~> 3)
+
+=== Modules
+
+No modules.
+
+=== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/group[keycloak_group.devops_stack_admins] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client[keycloak_openid_client.devops_stack] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] (resource)
+- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
+- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.client_secret] (resource)
+- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.devops_stack_users] (resource)
+
+=== Required Inputs
+
+The following input variables are required:
+
+==== [[input_base_domain]] <<input_base_domain,base_domain>>
+
+Description: Base domain of the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
+
+Description: Name given to the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
+==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+
+Description: SSL certificate issuer to use. In this module it is used to conditionally add extra arguments to the OIDC configuration.
+
+Type: `string`
+
+Default: `"ca-issuer"`
+
+==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+
+Description: IDs of the other modules on which this module depends on.
+
+Type: `map(string)`
+
+Default: `{}`
+
+==== [[input_oidc_redirect_uris]] <<input_oidc_redirect_uris,oidc_redirect_uris>>
+
+Description: List of URIs where the authentication server is allowed to return during the authentication flow.
+
+Type: `list(string)`
+
+Default:
+[source,json]
+----
+[
+  "*"
+]
+----
+
+==== [[input_user_map]] <<input_user_map,user_map>>
+
+Description: List of users to be added to the DevOps Stack Realm. Note that all fields are mandatory.
+
+Type:
+[source,hcl]
+----
+map(object({
+    username   = string
+    email      = string
+    first_name = string
+    last_name  = string
+  }))
+----
+
+Default:
+[source,json]
+----
+{
+  "devopsadmin": {
+    "email": "devopsadmin@devops-stack.io",
+    "first_name": "Administrator",
+    "last_name": "DevOps Stack",
+    "username": "devopsadmin"
+  }
+}
+----
+
+=== Outputs
+
+The following outputs are exported:
+
+==== [[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>>
+
+Description: Map containing the credentials of each created user.
+
+==== [[output_id]] <<output_id,id>>
+
+Description: ID to pass other modules in order to refer to this module as a dependency.
+
+==== [[output_oidc]] <<output_oidc,oidc>>
+
+Description: Object containing multiple OIDC configuration values.
+// END_TF_DOCS
+
+=== Reference in table format 
+
+.Show tables
+[%collapsible]
+====
+// BEGIN_TF_TABLES
+= Requirements
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[requirement_keycloak]] <<requirement_keycloak,keycloak>> |~> 4
+|[[requirement_null]] <<requirement_null,null>> |~> 3
+|[[requirement_random]] <<requirement_random,random>> |~> 3
+|===
+
+= Providers
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[provider_keycloak]] <<provider_keycloak,keycloak>> |~> 4
+|[[provider_null]] <<provider_null,null>> |~> 3
+|[[provider_random]] <<provider_random,random>> |~> 3
+|===
+
+= Resources
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Type
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/group[keycloak_group.devops_stack_admins] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client[keycloak_openid_client.devops_stack] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] |resource
+|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] |resource
+|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.client_secret] |resource
+|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.devops_stack_users] |resource
+|===
+
+= Inputs
+
+[cols="a,a,a,a,a",options="header,autowidth"]
+|===
+|Name |Description |Type |Default |Required
+|[[input_base_domain]] <<input_base_domain,base_domain>>
+|Base domain of the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+|SSL certificate issuer to use. In this module it is used to conditionally add extra arguments to the OIDC configuration.
+|`string`
+|`"ca-issuer"`
+|no
+
+|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
+|Name given to the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+|IDs of the other modules on which this module depends on.
+|`map(string)`
+|`{}`
+|no
+
+|[[input_oidc_redirect_uris]] <<input_oidc_redirect_uris,oidc_redirect_uris>>
+|List of URIs where the authentication server is allowed to return during the authentication flow.
+|`list(string)`
+|
+
+[source]
+----
+[
+  "*"
+]
+----
+
+|no
+
+|[[input_user_map]] <<input_user_map,user_map>>
+|List of users to be added to the DevOps Stack Realm. Note that all fields are mandatory.
+|
+
+[source]
+----
+map(object({
+    username   = string
+    email      = string
+    first_name = string
+    last_name  = string
+  }))
+----
+
+|
+
+[source]
+----
+{
+  "devopsadmin": {
+    "email": "devopsadmin@devops-stack.io",
+    "first_name": "Administrator",
+    "last_name": "DevOps Stack",
+    "username": "devopsadmin"
+  }
+}
+----
+
+|no
+
+|===
+
+= Outputs
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Description
+|[[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>> |Map containing the credentials of each created user.
+|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
+|[[output_oidc]] <<output_oidc,oidc>> |Object containing multiple OIDC configuration values.
+|===
+// END_TF_TABLES
+====

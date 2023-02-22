@@ -2,20 +2,22 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "random_password" "db_password" {
+  count   = var.database == null ? 1 : 0
+  length  = 32
+  special = false
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
-    annotations = {
-      "devops-stack.io/argocd_namespace" = var.argocd.namespace
-    }
+    namespace = var.argocd_namespace
   }
 
   spec {
-    description = "keycloak application project"
+    description = "Keycloak application project"
     source_repos = [
       "https://github.com/camptocamp/devops-stack-module-keycloak.git",
-      "https://github.com/keycloak/keycloak-operator.git"
     ]
 
     destination {
@@ -35,24 +37,24 @@ resource "argocd_project" "this" {
 }
 
 data "utils_deep_merge_yaml" "values" {
-  input = local.all_yaml
+  input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
 }
 
 resource "argocd_application" "operator" {
   metadata {
     name      = "keycloak-operator"
-    namespace = var.argocd.namespace
+    namespace = var.argocd_namespace
   }
 
-  wait = true
+  wait = var.app_autosync == { "allow_empty" = tobool(null), "prune" = tobool(null), "self_heal" = tobool(null) } ? false : true
 
   spec {
     project = argocd_project.this.metadata.0.name
 
     source {
-      repo_url        = "https://github.com/keycloak/keycloak-operator.git"
-      path            = "deploy"
-      target_revision = "15.0.1"
+      repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
+      path            = "charts/keycloak-operator"
+      target_revision = var.target_revision
     }
 
     destination {
@@ -61,9 +63,14 @@ resource "argocd_application" "operator" {
     }
 
     sync_policy {
-      automated = {
-        prune     = true
-        self_heal = true
+      automated = var.app_autosync
+
+      retry {
+        backoff = {
+          duration     = ""
+          max_duration = ""
+        }
+        limit = "0"
       }
 
       sync_options = [
@@ -80,8 +87,15 @@ resource "argocd_application" "operator" {
 resource "argocd_application" "this" {
   metadata {
     name      = "keycloak"
-    namespace = var.argocd.namespace
+    namespace = var.argocd_namespace
   }
+
+  timeouts {
+    create = "15m"
+    delete = "15m"
+  }
+
+  wait = var.app_autosync == { "allow_empty" = tobool(null), "prune" = tobool(null), "self_heal" = tobool(null) } ? false : true
 
   spec {
     project = argocd_project.this.metadata.0.name
@@ -101,9 +115,14 @@ resource "argocd_application" "this" {
     }
 
     sync_policy {
-      automated = {
-        prune     = true
-        self_heal = true
+      automated = var.app_autosync
+
+      retry {
+        backoff = {
+          duration     = ""
+          max_duration = ""
+        }
+        limit = "0"
       }
 
       sync_options = [
@@ -112,29 +131,40 @@ resource "argocd_application" "this" {
     }
   }
 
-  depends_on = [argocd_application.operator]
+  depends_on = [
+    resource.argocd_application.operator,
+  ]
 }
 
-resource "random_password" "clientsecret" {
-  length  = 16
-  special = false
+
+resource "null_resource" "wait_for_keycloak" {
+  # Until curl successfully completes the requested transfer, wait 10 seconds and retry for 180 seconds until timeout.
+  # --retry-all-errors makes curl retry even on non-transient HTTP errors (e.g. 404), requires curl >= 7.71.0
+  # -f makes curl fail on server errors
+  # -s prevents it from printing messages and the progress meter
+  # -o /dev/null discards the output message
+  # -k ignores self-signed SSL certificates
+  provisioner "local-exec" {
+    command = "curl --retry 20 --retry-max-time 180 --retry-delay 10 --retry-all-errors -f -s -o /dev/null -k 'https://keycloak.apps.${var.cluster_name}.${var.base_domain}'"
+  }
+
+  depends_on = [
+    resource.argocd_application.this,
+  ]
 }
 
-#data "kubernetes_secret" "keycloak_admin_password" {
-#  metadata {
-#    name      = "credential-keycloak"
-#    namespace = "keycloak"
-#  }
-#}
-
-resource "random_password" "keycloak_passwords" {
-  for_each = local.keycloak.user_map
-  length   = 16
-  special  = false
+data "kubernetes_secret" "admin_credentials" {
+  metadata {
+    name      = "keycloak-initial-admin"
+    namespace = var.namespace
+  }
+  depends_on = [
+    resource.null_resource.wait_for_keycloak,
+  ]
 }
 
 resource "null_resource" "this" {
   depends_on = [
-    resource.argocd_application.this,
+    resource.null_resource.wait_for_keycloak,
   ]
 }
