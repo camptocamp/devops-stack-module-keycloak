@@ -80,6 +80,14 @@ This module needs a working Argo CD, so at least it depends on `module.argocd_bo
 
 Since there is an ingress deployed with this module, it needs to be deployed after Traefik so it depends on `module.ingress`.
 
+=== External Requirements
+
+==== `curl`
+
+IMPORTANT: Minimum required version is *7.71.0*.
+
+We were forced to use a `null_resource` in order to wait for a working Keycloak deployment. This resource runs a local command which uses `curl` to test if the Keycloak interface is up and running. Because of some flags that were only introduced on more recent versions of `curl`, you will need to have installed at least the version *7.71.0*. 
+
 // BEGIN_TF_DOCS
 === Requirements
 
