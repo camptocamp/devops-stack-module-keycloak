@@ -151,21 +151,21 @@ Obviously, this module must be deployed after `module.keycloak`, because it need
 
 The following requirements are needed by this module:
 
-- [[requirement_keycloak]] <<requirement_keycloak,keycloak>> (~> 4)
+- [[requirement_keycloak]] <<requirement_keycloak,keycloak>> (>= 4)
 
-- [[requirement_null]] <<requirement_null,null>> (~> 3)
+- [[requirement_null]] <<requirement_null,null>> (>= 3)
 
-- [[requirement_random]] <<requirement_random,random>> (~> 3)
+- [[requirement_random]] <<requirement_random,random>> (>= 3)
 
 === Providers
 
 The following providers are used by this module:
 
-- [[provider_keycloak]] <<provider_keycloak,keycloak>> (~> 4)
+- [[provider_keycloak]] <<provider_keycloak,keycloak>> (>= 4)
 
-- [[provider_null]] <<provider_null,null>> (~> 3)
+- [[provider_null]] <<provider_null,null>> (>= 3)
 
-- [[provider_random]] <<provider_random,random>> (~> 3)
+- [[provider_random]] <<provider_random,random>> (>= 3)
 
 === Modules
 
@@ -294,9 +294,9 @@ Description: Object containing multiple OIDC configuration values.
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[requirement_keycloak]] <<requirement_keycloak,keycloak>> |~> 4
-|[[requirement_null]] <<requirement_null,null>> |~> 3
-|[[requirement_random]] <<requirement_random,random>> |~> 3
+|[[requirement_keycloak]] <<requirement_keycloak,keycloak>> |>= 4
+|[[requirement_null]] <<requirement_null,null>> |>= 3
+|[[requirement_random]] <<requirement_random,random>> |>= 3
 |===
 
 = Providers
@@ -304,9 +304,9 @@ Description: Object containing multiple OIDC configuration values.
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_keycloak]] <<provider_keycloak,keycloak>> |~> 4
-|[[provider_null]] <<provider_null,null>> |~> 3
-|[[provider_random]] <<provider_random,random>> |~> 3
+|[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
+|[[provider_null]] <<provider_null,null>> |>= 3
+|[[provider_random]] <<provider_random,random>> |>= 3
 |===
 
 = Resources
