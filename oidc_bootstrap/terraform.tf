@@ -2,15 +2,15 @@ terraform {
   required_providers {
     keycloak = {
       source  = "mrparkers/keycloak"
-      version = "~> 4"
+      version = ">= 4"
     }
     random = {
       source  = "random"
-      version = "~> 3"
+      version = ">= 3"
     }
     null = {
       source  = "null"
-      version = "~> 3"
+      version = ">= 3"
     }
   }
 }
