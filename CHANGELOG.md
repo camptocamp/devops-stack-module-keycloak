@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.0...v1.0.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* change to looser versions constraints as per best practices ([#10](https://github.com/camptocamp/devops-stack-module-keycloak/issues/10)) ([817baef](https://github.com/camptocamp/devops-stack-module-keycloak/commit/817baef75fe267ac958a6dc198b3a0234efa0b97))
+
 ## [1.0.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.0-alpha.1...v1.0.0) (2023-02-22)
 
 
