@@ -93,29 +93,29 @@ We were forced to use a `null_resource` in order to wait for a working Keycloak 
 
 The following requirements are needed by this module:
 
-- [[requirement_argocd]] <<requirement_argocd,argocd>> (~> 4)
+- [[requirement_argocd]] <<requirement_argocd,argocd>> (>= 4)
 
-- [[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> (~> 2)
+- [[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> (>= 2)
 
-- [[requirement_null]] <<requirement_null,null>> (~> 3)
+- [[requirement_null]] <<requirement_null,null>> (>= 3)
 
-- [[requirement_random]] <<requirement_random,random>> (~> 3)
+- [[requirement_random]] <<requirement_random,random>> (>= 3)
 
-- [[requirement_utils]] <<requirement_utils,utils>> (~> 1)
+- [[requirement_utils]] <<requirement_utils,utils>> (>= 1)
 
 === Providers
 
 The following providers are used by this module:
 
-- [[provider_argocd]] <<provider_argocd,argocd>> (~> 4)
+- [[provider_argocd]] <<provider_argocd,argocd>> (>= 4)
 
-- [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (~> 2)
+- [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (>= 2)
 
-- [[provider_null]] <<provider_null,null>> (~> 3)
+- [[provider_null]] <<provider_null,null>> (>= 3)
 
-- [[provider_random]] <<provider_random,random>> (~> 3)
+- [[provider_random]] <<provider_random,random>> (>= 3)
 
-- [[provider_utils]] <<provider_utils,utils>> (~> 1)
+- [[provider_utils]] <<provider_utils,utils>> (>= 1)
 
 === Modules
 
@@ -240,7 +240,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0-alpha.1"`
+Default: `"v1.0.0"`
 
 === Outputs
 
@@ -266,11 +266,11 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[requirement_argocd]] <<requirement_argocd,argocd>> |~> 4
-|[[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> |~> 2
-|[[requirement_null]] <<requirement_null,null>> |~> 3
-|[[requirement_random]] <<requirement_random,random>> |~> 3
-|[[requirement_utils]] <<requirement_utils,utils>> |~> 1
+|[[requirement_argocd]] <<requirement_argocd,argocd>> |>= 4
+|[[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> |>= 2
+|[[requirement_null]] <<requirement_null,null>> |>= 3
+|[[requirement_random]] <<requirement_random,random>> |>= 3
+|[[requirement_utils]] <<requirement_utils,utils>> |>= 1
 |===
 
 = Providers
@@ -278,11 +278,11 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_argocd]] <<provider_argocd,argocd>> |~> 4
-|[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |~> 2
-|[[provider_null]] <<provider_null,null>> |~> 3
-|[[provider_random]] <<provider_random,random>> |~> 3
-|[[provider_utils]] <<provider_utils,utils>> |~> 1
+|[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
+|[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |>= 2
+|[[provider_null]] <<provider_null,null>> |>= 3
+|[[provider_random]] <<provider_random,random>> |>= 3
+|[[provider_utils]] <<provider_utils,utils>> |>= 1
 |===
 
 = Resources
@@ -394,7 +394,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0-alpha.1"`
+|`"v1.0.0"`
 |no
 
 |===

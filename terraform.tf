@@ -2,23 +2,23 @@ terraform {
   required_providers {
     argocd = {
       source  = "oboukili/argocd"
-      version = "~> 4"
+      version = ">= 4"
     }
     utils = {
       source  = "cloudposse/utils"
-      version = "~> 1"
+      version = ">= 1"
     }
     random = {
       source  = "random"
-      version = "~> 3"
+      version = ">= 3"
     }
     null = {
       source  = "null"
-      version = "~> 3"
+      version = ">= 3"
     }
     kubernetes = {
       source  = "kubernetes"
-      version = "~> 2"
+      version = ">= 2"
     }
   }
 }
