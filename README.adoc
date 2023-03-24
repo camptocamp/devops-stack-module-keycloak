@@ -117,10 +117,6 @@ The following providers are used by this module:
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
 
-=== Modules
-
-No modules.
-
 === Resources
 
 The following resources are used by this module:
@@ -240,7 +236,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0"`
+Default: `"v1.0.1"`
 
 === Outputs
 
@@ -394,7 +390,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0"`
+|`"v1.0.1"`
 |no
 
 |===
