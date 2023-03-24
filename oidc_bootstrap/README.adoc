@@ -167,10 +167,6 @@ The following providers are used by this module:
 
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
-=== Modules
-
-No modules.
-
 === Resources
 
 The following resources are used by this module:
