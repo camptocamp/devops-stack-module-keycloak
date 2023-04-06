@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.1...v1.0.2) (2023-04-06)
+
+
+### Bug Fixes
+
+* remove hard curl verison dependency ([#12](https://github.com/camptocamp/devops-stack-module-keycloak/issues/12)) ([d427d9c](https://github.com/camptocamp/devops-stack-module-keycloak/commit/d427d9cba4558c869b14fd2d1e0010118823c781))
+
 ## [1.0.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.0...v1.0.1) (2023-03-08)
 
 
