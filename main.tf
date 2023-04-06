@@ -138,14 +138,12 @@ resource "argocd_application" "this" {
 
 
 resource "null_resource" "wait_for_keycloak" {
-  # Until curl successfully completes the requested transfer, wait 10 seconds and retry for 180 seconds until timeout.
-  # --retry-all-errors makes curl retry even on non-transient HTTP errors (e.g. 404), requires curl >= 7.71.0
-  # -f makes curl fail on server errors
-  # -s prevents it from printing messages and the progress meter
-  # -o /dev/null discards the output message
-  # -k ignores self-signed SSL certificates
   provisioner "local-exec" {
-    command = "curl --retry 20 --retry-max-time 180 --retry-delay 10 --retry-all-errors -f -s -o /dev/null -k 'https://keycloak.apps.${var.cluster_name}.${var.base_domain}'"
+    command = <<EOT
+    while [ $(curl -k https://keycloak.apps.${var.cluster_name}.${var.base_domain} -I -s | head -n 1 | cut -d' ' -f2) != '200' ]; do
+      sleep 5 
+    done
+    EOT
   }
 
   depends_on = [
