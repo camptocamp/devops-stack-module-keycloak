@@ -161,9 +161,9 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- [[provider_keycloak]] <<provider_keycloak,keycloak>> (>= 4)
-
 - [[provider_null]] <<provider_null,null>> (>= 3)
+
+- [[provider_keycloak]] <<provider_keycloak,keycloak>> (>= 4)
 
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
@@ -188,15 +188,15 @@ The following resources are used by this module:
 
 The following input variables are required:
 
-==== [[input_base_domain]] <<input_base_domain,base_domain>>
-
-Description: Base domain of the cluster. Value used for the ingress' URL of the application.
-
-Type: `string`
-
 ==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
 
 Description: Name given to the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+==== [[input_base_domain]] <<input_base_domain,base_domain>>
+
+Description: Base domain of the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
@@ -266,10 +266,6 @@ Default:
 
 The following outputs are exported:
 
-==== [[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>>
-
-Description: Map containing the credentials of each created user.
-
 ==== [[output_id]] <<output_id,id>>
 
 Description: ID to pass other modules in order to refer to this module as a dependency.
@@ -277,6 +273,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 ==== [[output_oidc]] <<output_oidc,oidc>>
 
 Description: Object containing multiple OIDC configuration values.
+
+==== [[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>>
+
+Description: Map containing the credentials of each created user.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -300,9 +300,9 @@ Description: Object containing multiple OIDC configuration values.
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
 |[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_random]] <<provider_random,random>> |>= 3
+|[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
 |===
 
 = Resources
@@ -329,6 +329,12 @@ Description: Object containing multiple OIDC configuration values.
 [cols="a,a,a,a,a",options="header,autowidth"]
 |===
 |Name |Description |Type |Default |Required
+|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
+|Name given to the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
 |[[input_base_domain]] <<input_base_domain,base_domain>>
 |Base domain of the cluster. Value used for the ingress' URL of the application.
 |`string`
@@ -340,12 +346,6 @@ Description: Object containing multiple OIDC configuration values.
 |`string`
 |`"ca-issuer"`
 |no
-
-|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
-|Name given to the cluster. Value used for the ingress' URL of the application.
-|`string`
-|n/a
-|yes
 
 |[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 |IDs of the other modules on which this module depends on.
@@ -404,9 +404,9 @@ map(object({
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
-|[[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>> |Map containing the credentials of each created user.
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
 |[[output_oidc]] <<output_oidc,oidc>> |Object containing multiple OIDC configuration values.
+|[[output_devops_stack_users_passwords]] <<output_devops_stack_users_passwords,devops_stack_users_passwords>> |Map containing the credentials of each created user.
 |===
 // END_TF_TABLES
 ====

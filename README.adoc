@@ -99,15 +99,15 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- [[provider_argocd]] <<provider_argocd,argocd>> (>= 4)
-
-- [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (>= 2)
-
 - [[provider_null]] <<provider_null,null>> (>= 3)
 
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
+
+- [[provider_argocd]] <<provider_argocd,argocd>> (>= 4)
+
+- [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (>= 2)
 
 === Resources
 
@@ -127,9 +127,9 @@ The following resources are used by this module:
 
 The following input variables are required:
 
-==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
 
-Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
+Description: Name given to the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
@@ -139,15 +139,47 @@ Description: Base domain of the cluster. Value used for the ingress' URL of the 
 
 Type: `string`
 
-==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
+==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 
-Description: Name given to the cluster. Value used for the ingress' URL of the application.
+Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
 
 Type: `string`
 
 === Optional Inputs
 
 The following input variables are optional (have default values):
+
+==== [[input_target_revision]] <<input_target_revision,target_revision>>
+
+Description: Override of target revision of the application chart.
+
+Type: `string`
+
+Default: `"v1.0.2"`
+
+==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+
+Description: SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+
+Type: `string`
+
+Default: `"ca-issuer"`
+
+==== [[input_namespace]] <<input_namespace,namespace>>
+
+Description: Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+
+Type: `string`
+
+Default: `"keycloak"`
+
+==== [[input_helm_values]] <<input_helm_values,helm_values>>
+
+Description: Helm chart value overrides. They should be passed as a list of HCL structures.
+
+Type: `any`
+
+Default: `[]`
 
 ==== [[input_app_autosync]] <<input_app_autosync,app_autosync>>
 
@@ -173,13 +205,13 @@ Default:
 }
 ----
 
-==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 
-Description: SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+Description: IDs of the other modules on which this module depends on.
 
-Type: `string`
+Type: `map(string)`
 
-Default: `"ca-issuer"`
+Default: `{}`
 
 ==== [[input_database]] <<input_database,database>>
 
@@ -198,49 +230,17 @@ object({
 
 Default: `null`
 
-==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
-
-Description: IDs of the other modules on which this module depends on.
-
-Type: `map(string)`
-
-Default: `{}`
-
-==== [[input_helm_values]] <<input_helm_values,helm_values>>
-
-Description: Helm chart value overrides. They should be passed as a list of HCL structures.
-
-Type: `any`
-
-Default: `[]`
-
-==== [[input_namespace]] <<input_namespace,namespace>>
-
-Description: Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
-
-Type: `string`
-
-Default: `"keycloak"`
-
-==== [[input_target_revision]] <<input_target_revision,target_revision>>
-
-Description: Override of target revision of the application chart.
-
-Type: `string`
-
-Default: `"v1.0.1"`
-
 === Outputs
 
 The following outputs are exported:
 
-==== [[output_admin_credentials]] <<output_admin_credentials,admin_credentials>>
-
-Description: Credentials for the administrator user of the master realm created on deployment.
-
 ==== [[output_id]] <<output_id,id>>
 
 Description: ID to pass other modules in order to refer to this module as a dependency.
+
+==== [[output_admin_credentials]] <<output_admin_credentials,admin_credentials>>
+
+Description: Credentials for the administrator user of the master realm created on deployment.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -266,11 +266,11 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
-|[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |>= 2
 |[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
+|[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
+|[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |>= 2
 |===
 
 = Resources
@@ -294,6 +294,48 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a,a,a,a",options="header,autowidth"]
 |===
 |Name |Description |Type |Default |Required
+|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
+|Name given to the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_base_domain]] <<input_base_domain,base_domain>>
+|Base domain of the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+|Namespace used by Argo CD where the Application and AppProject resources should be created.
+|`string`
+|n/a
+|yes
+
+|[[input_target_revision]] <<input_target_revision,target_revision>>
+|Override of target revision of the application chart.
+|`string`
+|`"v1.0.2"`
+|no
+
+|[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+|SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+|`string`
+|`"ca-issuer"`
+|no
+
+|[[input_namespace]] <<input_namespace,namespace>>
+|Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+|`string`
+|`"keycloak"`
+|no
+
+|[[input_helm_values]] <<input_helm_values,helm_values>>
+|Helm chart value overrides. They should be passed as a list of HCL structures.
+|`any`
+|`[]`
+|no
+
 |[[input_app_autosync]] <<input_app_autosync,app_autosync>>
 |Automated sync options for the Argo CD Application resource.
 |
@@ -320,29 +362,11 @@ object({
 
 |no
 
-|[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
-|Namespace used by Argo CD where the Application and AppProject resources should be created.
-|`string`
-|n/a
-|yes
-
-|[[input_base_domain]] <<input_base_domain,base_domain>>
-|Base domain of the cluster. Value used for the ingress' URL of the application.
-|`string`
-|n/a
-|yes
-
-|[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
-|SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
-|`string`
-|`"ca-issuer"`
+|[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+|IDs of the other modules on which this module depends on.
+|`map(string)`
+|`{}`
 |no
-
-|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
-|Name given to the cluster. Value used for the ingress' URL of the application.
-|`string`
-|n/a
-|yes
 
 |[[input_database]] <<input_database,database>>
 |Keycloak external database server configuration.
@@ -361,30 +385,6 @@ object({
 |`null`
 |no
 
-|[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
-|IDs of the other modules on which this module depends on.
-|`map(string)`
-|`{}`
-|no
-
-|[[input_helm_values]] <<input_helm_values,helm_values>>
-|Helm chart value overrides. They should be passed as a list of HCL structures.
-|`any`
-|`[]`
-|no
-
-|[[input_namespace]] <<input_namespace,namespace>>
-|Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
-|`string`
-|`"keycloak"`
-|no
-
-|[[input_target_revision]] <<input_target_revision,target_revision>>
-|Override of target revision of the application chart.
-|`string`
-|`"v1.0.1"`
-|no
-
 |===
 
 = Outputs
@@ -392,8 +392,8 @@ object({
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
-|[[output_admin_credentials]] <<output_admin_credentials,admin_credentials>> |Credentials for the administrator user of the master realm created on deployment.
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
+|[[output_admin_credentials]] <<output_admin_credentials,admin_credentials>> |Credentials for the administrator user of the master realm created on deployment.
 |===
 // END_TF_TABLES
 ====
