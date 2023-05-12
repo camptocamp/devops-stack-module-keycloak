@@ -87,7 +87,7 @@ module "oidc" {
 
 NOTE: All the fields on each user are required. Besides, since the e-mail is a scope required by most of our apps, the e-mail is automatically set as verified when the users are created.
 
-IMPORTANT: All users will belong to the administrators group and will have high privileges in applications such as Argo CD.
+IMPORTANT: All users will belong to the administrators group and will have high privileges in applications such as Argo CD and MinIO.
 
 The module contains an output called `devops_stack_users_passwords` where you can get a map containing every username and their respective initial password.
 
