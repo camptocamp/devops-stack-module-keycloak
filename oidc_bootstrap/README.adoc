@@ -174,8 +174,10 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/group[keycloak_group.devops_stack_admins] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client[keycloak_openid_client.devops_stack] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] (resource)
-- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] (resource)
-- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack_groups] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack_minio_policy] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack_groups] (resource)
+- https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_user_attribute_protocol_mapper[keycloak_openid_user_attribute_protocol_mapper.devops_stack_minio_policy] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] (resource)
 - https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] (resource)
@@ -300,9 +302,9 @@ Description: Map containing the credentials of each created user.
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
+|[[provider_null]] <<provider_null,null>> |>= 3
 |===
 
 = Resources
@@ -313,8 +315,10 @@ Description: Map containing the credentials of each created user.
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/group[keycloak_group.devops_stack_admins] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client[keycloak_openid_client.devops_stack] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_default_scopes[keycloak_openid_client_default_scopes.client_default_scopes] |resource
-|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack] |resource
-|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack_groups] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_client_scope[keycloak_openid_client_scope.devops_stack_minio_policy] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_group_membership_protocol_mapper[keycloak_openid_group_membership_protocol_mapper.devops_stack_groups] |resource
+|https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/openid_user_attribute_protocol_mapper[keycloak_openid_user_attribute_protocol_mapper.devops_stack_minio_policy] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/realm[keycloak_realm.devops_stack] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user[keycloak_user.devops_stack_users] |resource
 |https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/user_groups[keycloak_user_groups.devops_stack_admins] |resource
