@@ -63,7 +63,6 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "devops_stack_minio_po
   name                 = "minio-policy"
   user_attribute       = "policy"
   claim_name           = "policy"
-  full_path            = false
   multivalued          = true
   aggregate_attributes = true
   add_to_id_token      = true
