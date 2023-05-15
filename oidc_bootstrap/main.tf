@@ -35,19 +35,38 @@ resource "keycloak_openid_client" "devops_stack" {
   valid_redirect_uris          = var.oidc_redirect_uris
 }
 
-resource "keycloak_openid_client_scope" "devops_stack" {
+resource "keycloak_openid_client_scope" "devops_stack_groups" {
   realm_id               = resource.keycloak_realm.devops_stack.id
   name                   = "groups"
   description            = "OpenID Connect scope to map a user's group memberships to a claim"
   include_in_token_scope = true
 }
 
-resource "keycloak_openid_group_membership_protocol_mapper" "devops_stack" {
+resource "keycloak_openid_client_scope" "devops_stack_minio_policy" {
+  realm_id               = resource.keycloak_realm.devops_stack.id
+  name                   = "minio-policy"
+  description            = "OpenID Connect scope to map MinIO access policy to a claim"
+  include_in_token_scope = true
+}
+
+resource "keycloak_openid_group_membership_protocol_mapper" "devops_stack_groups" {
   realm_id        = resource.keycloak_realm.devops_stack.id
-  client_scope_id = resource.keycloak_openid_client_scope.devops_stack.id
+  client_scope_id = resource.keycloak_openid_client_scope.devops_stack_groups.id
   name            = "groups"
   claim_name      = "groups"
   full_path       = false
+}
+
+resource "keycloak_openid_user_attribute_protocol_mapper" "devops_stack_minio_policy" {
+  realm_id             = resource.keycloak_realm.devops_stack.id
+  client_scope_id      = resource.keycloak_openid_client_scope.devops_stack_minio_policy.id
+  name                 = "minio-policy"
+  user_attribute       = "policy"
+  claim_name           = "policy"
+  multivalued          = true
+  aggregate_attributes = true
+  add_to_id_token      = true
+  claim_value_type     = "String"
 }
 
 resource "keycloak_openid_client_default_scopes" "client_default_scopes" {
@@ -57,13 +76,18 @@ resource "keycloak_openid_client_default_scopes" "client_default_scopes" {
     "profile",
     "email",
     "roles",
-    resource.keycloak_openid_client_scope.devops_stack.name,
+    resource.keycloak_openid_client_scope.devops_stack_groups.name,
+    resource.keycloak_openid_client_scope.devops_stack_minio_policy.name,
   ]
 }
 
 resource "keycloak_group" "devops_stack_admins" {
   realm_id = resource.keycloak_realm.devops_stack.id
   name     = "devops-stack-admins"
+  attributes = {
+    "terraform" = "true"
+    "policy"    = "consoleAdmin##readwrite##diagnostics"
+  }
 }
 
 resource "random_password" "devops_stack_users" {
@@ -86,7 +110,7 @@ resource "keycloak_user" "devops_stack_users" {
   email          = each.value.email
   email_verified = true
   attributes = {
-    terraform = "true"
+    "terraform" = "true"
   }
 }
 
