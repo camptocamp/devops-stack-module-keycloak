@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.2...v1.1.0) (2023-05-15)
+
+
+### Features
+
+* **oidc_bootstrap:** add policy scope to authenticate on MinIO module ([#16](https://github.com/camptocamp/devops-stack-module-keycloak/issues/16)) ([b93a756](https://github.com/camptocamp/devops-stack-module-keycloak/commit/b93a756eb8dae54ef297ef02f376cc82bde98a6b))
+
 ## [1.0.2](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.1...v1.0.2) (2023-04-06)
 
 
