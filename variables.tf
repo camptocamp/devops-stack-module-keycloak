@@ -15,6 +15,7 @@ variable "base_domain" {
 variable "argocd_namespace" {
   description = "Namespace used by Argo CD where the Application and AppProject resources should be created."
   type        = string
+  default     = "argocd"
 }
 
 variable "target_revision" {
