@@ -116,11 +116,11 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.operator] (resource)
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.this] (resource)
 - https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] (resource)
-- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
-- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] (resource)
-- https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] (resource)
-- https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] (resource)
-- https://registry.terraform.io/providers/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_credentials] (data source)
+- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
+- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
+- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] (resource)
+- https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.db_password] (resource)
+- https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_credentials] (data source)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
 === Required Inputs
@@ -139,15 +139,17 @@ Description: Base domain of the cluster. Value used for the ingress' URL of the 
 
 Type: `string`
 
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
 ==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 
 Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
 
 Type: `string`
 
-=== Optional Inputs
-
-The following input variables are optional (have default values):
+Default: `"argocd"`
 
 ==== [[input_target_revision]] <<input_target_revision,target_revision>>
 
@@ -155,7 +157,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.2"`
+Default: `"v1.1.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -281,11 +283,11 @@ Description: Credentials for the administrator user of the master realm created 
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.operator] |resource
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application[argocd_application.this] |resource
 |https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/project[argocd_project.this] |resource
-|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.dependencies] |resource
-|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] |resource
-|https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] |resource
-|https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] |resource
-|https://registry.terraform.io/providers/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_credentials] |data source
+|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
+|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
+|https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] |resource
+|https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.db_password] |resource
+|https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_credentials] |data source
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
 
@@ -309,13 +311,13 @@ Description: Credentials for the administrator user of the master realm created 
 |[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 |Namespace used by Argo CD where the Application and AppProject resources should be created.
 |`string`
-|n/a
-|yes
+|`"argocd"`
+|no
 
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.2"`
+|`"v1.1.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
