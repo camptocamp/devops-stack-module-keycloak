@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.1.0...v1.1.1) (2023-05-30)
+
+
+### Bug Fixes
+
+* add default argocd_namespace ([66588ca](https://github.com/camptocamp/devops-stack-module-keycloak/commit/66588cab48b6aba6a702093ca052a2c09114e800))
+
 ## [1.1.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.0.2...v1.1.0) (2023-05-15)
 
 
