@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.1.1...v2.0.0) (2023-07-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support to oboukili/argocd >= v5 ([#20](https://github.com/camptocamp/devops-stack-module-keycloak/issues/20))
+
+### Features
+
+* add support to oboukili/argocd &gt;= v5 ([#20](https://github.com/camptocamp/devops-stack-module-keycloak/issues/20)) ([e72874f](https://github.com/camptocamp/devops-stack-module-keycloak/commit/e72874ffb3fb45a06c9d8c7c26c03f4c44f6d674))
+
 ## [1.1.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v1.1.0...v1.1.1) (2023-05-30)
 
 
