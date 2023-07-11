@@ -85,7 +85,7 @@ Since there is an ingress deployed with this module, it needs to be deployed aft
 
 The following requirements are needed by this module:
 
-- [[requirement_argocd]] <<requirement_argocd,argocd>> (>= 4)
+- [[requirement_argocd]] <<requirement_argocd,argocd>> (>= 5)
 
 - [[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> (>= 2)
 
@@ -105,7 +105,7 @@ The following providers are used by this module:
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
 
-- [[provider_argocd]] <<provider_argocd,argocd>> (>= 4)
+- [[provider_argocd]] <<provider_argocd,argocd>> (>= 5)
 
 - [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (>= 2)
 
@@ -157,7 +157,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.1.0"`
+Default: `"v1.1.1"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -256,7 +256,7 @@ Description: Credentials for the administrator user of the master realm created 
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[requirement_argocd]] <<requirement_argocd,argocd>> |>= 4
+|[[requirement_argocd]] <<requirement_argocd,argocd>> |>= 5
 |[[requirement_kubernetes]] <<requirement_kubernetes,kubernetes>> |>= 2
 |[[requirement_null]] <<requirement_null,null>> |>= 3
 |[[requirement_random]] <<requirement_random,random>> |>= 3
@@ -271,7 +271,7 @@ Description: Credentials for the administrator user of the master realm created 
 |[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
-|[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
+|[[provider_argocd]] <<provider_argocd,argocd>> |>= 5
 |[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |>= 2
 |===
 
@@ -317,7 +317,7 @@ Description: Credentials for the administrator user of the master realm created 
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.1.0"`
+|`"v1.1.1"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
