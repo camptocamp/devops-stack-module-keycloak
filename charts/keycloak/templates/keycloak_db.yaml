@@ -43,11 +43,11 @@ spec:
               name: keycloak-db-secret
               key: password
         - name: PGDATA
-          value: /data/pgdata
+          value: /data/pgdata/db
         - name: POSTGRES_DB
           value: keycloak
         volumeMounts:
-          - mountPath: /data/pgdata
+          - mountPath: /data/pgdata/db
             name: db-data
       volumes:
         - name: db-data
