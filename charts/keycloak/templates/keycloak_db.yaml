@@ -1,5 +1,16 @@
 {{- if .Values.keycloak.database.create }}
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc
+spec:
+  resources:
+    requests:
+      storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -35,6 +46,13 @@ spec:
           value: /data/pgdata
         - name: POSTGRES_DB
           value: keycloak
+        volumeMounts:
+          - mountPath: /data/pgdata
+            name: db-data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: postgresql-pvc
 ---
 apiVersion: v1
 kind: Service
