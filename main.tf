@@ -52,7 +52,7 @@ resource "argocd_application" "operator" {
     project = argocd_project.this.metadata.0.name
 
     source {
-      repo_url        = "https://github.com/qalita-io/devops-stack-module-keycloak.git"
+      repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
       path            = "charts/keycloak-operator"
       target_revision = var.target_revision
     }
@@ -106,7 +106,7 @@ resource "argocd_application" "this" {
     project = argocd_project.this.metadata.0.name
 
     source {
-      repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
+      repo_url        = "https://github.com/qalita-io/devops-stack-module-keycloak.git"
       path            = "charts/keycloak"
       target_revision = var.target_revision
       helm {
