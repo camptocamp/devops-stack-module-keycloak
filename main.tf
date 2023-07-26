@@ -17,7 +17,7 @@ resource "argocd_project" "this" {
   spec {
     description = "Keycloak application project"
     source_repos = [
-      "https://github.com/camptocamp/devops-stack-module-keycloak.git",
+      "https://github.com/qalita-io/devops-stack-module-keycloak.git",
     ]
 
     destination {
@@ -52,7 +52,7 @@ resource "argocd_application" "operator" {
     project = argocd_project.this.metadata.0.name
 
     source {
-      repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
+      repo_url        = "https://github.com/qalita-io/devops-stack-module-keycloak.git"
       path            = "charts/keycloak-operator"
       target_revision = var.target_revision
     }
