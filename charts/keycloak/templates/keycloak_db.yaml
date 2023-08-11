@@ -1,5 +1,6 @@
 {{- if .Values.keycloak.database.create }}
 ---
+{{- if .Values.keycloak.database.pvc.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -7,10 +8,11 @@ metadata:
 spec:
   resources:
     requests:
-      storage: 10Gi
+      storage: {{ .Values.keycloak.database.pvc.size }}
   accessModes:
   - ReadWriteOnce
 ---
+{{- end }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
