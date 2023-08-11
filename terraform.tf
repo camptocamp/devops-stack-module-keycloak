@@ -20,5 +20,9 @@ terraform {
       source  = "kubernetes"
       version = ">= 2"
     }
+    vault = {
+      source  = "hashicorp/vault"
+      version = ">= 3"
+    }
   }
 }

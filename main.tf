@@ -8,6 +8,15 @@ resource "random_password" "db_password" {
   special = false
 }
 
+resource "vault_generic_secret" "keycloak_secrets" {
+  count = var.database == null ? 1 : 0
+  path  = "secret/devops-stack/keycloak"
+  data_json = jsonencode({
+    keycloak-db-password = random_password.db_password.0.result
+    keycloak-db-username = "postgres"
+  })
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "keycloak"
@@ -104,8 +113,12 @@ resource "argocd_application" "this" {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
       path            = "charts/keycloak"
       target_revision = var.target_revision
-      helm {
-        values = data.utils_deep_merge_yaml.values.output
+      plugin {
+        name = "avp-helm"
+        env {
+          name  = "HELM_VALUES"
+          value = data.utils_deep_merge_yaml.values.output
+        }
       }
     }
 
