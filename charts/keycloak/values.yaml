@@ -1,6 +1,1 @@
 ---
-keycloak:
-  database:
-    pvc:
-      enabled: false
-      size: 1Gi

@@ -15,6 +15,10 @@ locals {
         username = base64encode("postgres")
         password = base64encode(random_password.db_password.0.result)
         host     = "keycloak-postgres-db"
+        pvc = [{
+          enabled = false
+          size    = "1Gi"
+        }]
       }
       ingress = {
         enabled = true
