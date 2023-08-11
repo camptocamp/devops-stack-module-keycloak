@@ -95,19 +95,23 @@ The following requirements are needed by this module:
 
 - [[requirement_utils]] <<requirement_utils,utils>> (>= 1)
 
+- [[requirement_vault]] <<requirement_vault,vault>> (>= 3)
+
 === Providers
 
 The following providers are used by this module:
 
-- [[provider_null]] <<provider_null,null>> (>= 3)
-
 - [[provider_random]] <<provider_random,random>> (>= 3)
+
+- [[provider_vault]] <<provider_vault,vault>> (>= 3)
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
 
 - [[provider_argocd]] <<provider_argocd,argocd>> (>= 4)
 
 - [[provider_kubernetes]] <<provider_kubernetes,kubernetes>> (>= 2)
+
+- [[provider_null]] <<provider_null,null>> (>= 3)
 
 === Resources
 
@@ -120,6 +124,7 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] (resource)
 - https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] (resource)
 - https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] (resource)
+- https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/generic_secret[vault_generic_secret.keycloak_secrets] (resource)
 - https://registry.terraform.io/providers/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_credentials] (data source)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
@@ -155,7 +160,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.2"`
+Default: `"v1.1.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -259,6 +264,7 @@ Description: Credentials for the administrator user of the master realm created 
 |[[requirement_null]] <<requirement_null,null>> |>= 3
 |[[requirement_random]] <<requirement_random,random>> |>= 3
 |[[requirement_utils]] <<requirement_utils,utils>> |>= 1
+|[[requirement_vault]] <<requirement_vault,vault>> |>= 3
 |===
 
 = Providers
@@ -268,6 +274,7 @@ Description: Credentials for the administrator user of the master realm created 
 |Name |Version
 |[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_random]] <<provider_random,random>> |>= 3
+|[[provider_vault]] <<provider_vault,vault>> |>= 3
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
 |[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
 |[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |>= 2
@@ -285,6 +292,7 @@ Description: Credentials for the administrator user of the master realm created 
 |https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.this] |resource
 |https://registry.terraform.io/providers/null/latest/docs/resources/resource[null_resource.wait_for_keycloak] |resource
 |https://registry.terraform.io/providers/random/latest/docs/resources/password[random_password.db_password] |resource
+|https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/generic_secret[vault_generic_secret.keycloak_secrets] |resource
 |https://registry.terraform.io/providers/kubernetes/latest/docs/data-sources/secret[kubernetes_secret.admin_credentials] |data source
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
@@ -315,7 +323,7 @@ Description: Credentials for the administrator user of the master realm created 
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.2"`
+|`"v1.1.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
