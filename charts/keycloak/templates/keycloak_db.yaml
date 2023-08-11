@@ -48,6 +48,7 @@ spec:
           value: /data/pgdata
         - name: POSTGRES_DB
           value: keycloak
+{{- if .Values.keycloak.database.pvc.enabled }}
         volumeMounts:
           - mountPath: /data/pgdata
             subPath: pgdata
@@ -56,6 +57,7 @@ spec:
         - name: db-data
           persistentVolumeClaim:
             claimName: postgresql-pvc
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
