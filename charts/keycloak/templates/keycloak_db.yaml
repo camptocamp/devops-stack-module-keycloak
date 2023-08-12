@@ -1,6 +1,6 @@
 {{- if .Values.keycloak.database.create }}
 ---
-{{- if .Values.keycloak.database.pvc.enabled }}
+{{- if .Values.keycloak.pvc.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,7 +8,7 @@ metadata:
 spec:
   resources:
     requests:
-      storage: {{ .Values.keycloak.database.pvc.size }}
+      storage: {{ .Values.keycloak.pvc.size }}
   accessModes:
   - ReadWriteOnce
 ---
