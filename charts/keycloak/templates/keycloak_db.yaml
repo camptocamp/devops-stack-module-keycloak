@@ -48,7 +48,7 @@ spec:
           value: /data/pgdata
         - name: POSTGRES_DB
           value: keycloak
-{{- if .Values.keycloak.database.pvc.enabled }}
+{{- if .Values.keycloak.pvc.enabled }}
         volumeMounts:
           - mountPath: /data/pgdata
             subPath: pgdata
