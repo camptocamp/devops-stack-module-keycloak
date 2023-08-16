@@ -13,8 +13,8 @@ locals {
         # TODO doc that the fallback map (experimental ephemeral postgresql server) should never be used in production.
         create   = true
         vendor   = "postgres"
-        username = "<path:secret/data/devops-stack/keycloak#keycloak-db-username | base64encode>"
-        password = "<path:secret/data/devops-stack/keycloak#keycloak-db-password | base64encode>"
+        username = "<path:secret/data/devops-stack/keycloak/in-module#keycloak-db-username | base64encode>"
+        password = "<path:secret/data/devops-stack/keycloak/in-module#keycloak-db-password | base64encode>"
         host     = "keycloak-postgres-db"
       }
       ingress = {
