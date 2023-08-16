@@ -10,7 +10,7 @@ resource "random_password" "db_password" {
 
 resource "vault_generic_secret" "keycloak_secrets" {
   count = var.database == null ? 1 : 0
-  path  = "secret/devops-stack/keycloak/in-module"
+  path  = "secret/devops-stack/submodules/keycloak"
   data_json = jsonencode({
     keycloak-db-password = random_password.db_password.0.result
     keycloak-db-username = "postgres"
