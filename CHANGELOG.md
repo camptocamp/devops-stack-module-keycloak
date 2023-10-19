@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v2.0.1...v2.1.0) (2023-10-19)
+
+
+### Features
+
+* add standard variables and variable to add labels to Argo CD app ([f564ec5](https://github.com/camptocamp/devops-stack-module-keycloak/commit/f564ec57681d7d5e07044c3435fe1abacac677e6))
+* add variables to set AppProject and destination cluster ([8510db2](https://github.com/camptocamp/devops-stack-module-keycloak/commit/8510db2fbc2392f8516488edcead524528bfed2f))
+
 ## [2.0.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v2.0.0...v2.0.1) (2023-08-09)
 
 
