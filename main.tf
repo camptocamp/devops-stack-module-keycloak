@@ -61,6 +61,9 @@ resource "argocd_application" "operator" {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
       path            = "charts/keycloak-operator"
       target_revision = var.target_revision
+      helm {
+        release_name = "keycloak-operator"
+      }
     }
 
     destination {
@@ -123,7 +126,8 @@ resource "argocd_application" "this" {
       path            = "charts/keycloak"
       target_revision = var.target_revision
       helm {
-        values = data.utils_deep_merge_yaml.values.output
+        release_name = "keycloak"
+        values       = data.utils_deep_merge_yaml.values.output
       }
     }
 
