@@ -15,7 +15,7 @@ variable "base_domain" {
 variable "cluster_issuer" {
   description = "SSL certificate issuer to use. In this module it is used to conditionally add extra arguments to the OIDC configuration."
   type        = string
-  default     = "ca-issuer"
+  default     = "selfsigned-issuer"
 }
 
 variable "dependency_ids" {
