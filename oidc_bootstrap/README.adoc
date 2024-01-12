@@ -161,11 +161,11 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
+- [[provider_null]] <<provider_null,null>> (>= 3)
+
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
 - [[provider_keycloak]] <<provider_keycloak,keycloak>> (>= 4)
-
-- [[provider_null]] <<provider_null,null>> (>= 3)
 
 === Resources
 
@@ -212,7 +212,7 @@ Description: SSL certificate issuer to use. In this module it is used to conditi
 
 Type: `string`
 
-Default: `"ca-issuer"`
+Default: `"selfsigned-issuer"`
 
 ==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 
@@ -302,9 +302,9 @@ Description: Map containing the credentials of each created user.
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_null]] <<provider_null,null>> |>= 3
-|[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
 |[[provider_random]] <<provider_random,random>> |>= 3
+|[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
+|[[provider_null]] <<provider_null,null>> |>= 3
 |===
 
 = Resources
@@ -348,7 +348,7 @@ Description: Map containing the credentials of each created user.
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 |SSL certificate issuer to use. In this module it is used to conditionally add extra arguments to the OIDC configuration.
 |`string`
-|`"ca-issuer"`
+|`"selfsigned-issuer"`
 |no
 
 |[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
