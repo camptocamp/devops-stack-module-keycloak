@@ -13,7 +13,7 @@ resource "argocd_project" "this" {
 
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "keycloak-${var.destination_cluster}" : "keycloak"
-    namespace = var.argocd_namespace
+    namespace = "argocd"
   }
 
   spec {
@@ -45,7 +45,7 @@ data "utils_deep_merge_yaml" "values" {
 resource "argocd_application" "operator" {
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "keycloak-operator-${var.destination_cluster}" : "keycloak-operator"
-    namespace = var.argocd_namespace
+    namespace = "argocd"
     labels = merge({
       "application" = "keycloak-operator"
       "cluster"     = var.destination_cluster
@@ -104,7 +104,7 @@ resource "argocd_application" "operator" {
 resource "argocd_application" "this" {
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "keycloak-${var.destination_cluster}" : "keycloak"
-    namespace = var.argocd_namespace
+    namespace = "argocd"
     labels = merge({
       "application" = "keycloak"
       "cluster"     = var.destination_cluster
