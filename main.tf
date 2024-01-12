@@ -24,7 +24,7 @@ resource "argocd_project" "this" {
 
     destination {
       name      = var.destination_cluster
-      namespace = var.namespace
+      namespace = "keycloak"
     }
 
     orphaned_resources {
@@ -68,7 +68,7 @@ resource "argocd_application" "operator" {
 
     destination {
       name      = var.destination_cluster
-      namespace = var.namespace
+      namespace = "keycloak"
     }
 
     sync_policy {
@@ -133,7 +133,7 @@ resource "argocd_application" "this" {
 
     destination {
       name      = var.destination_cluster
-      namespace = var.namespace
+      namespace = "keycloak"
     }
 
     sync_policy {
@@ -183,7 +183,7 @@ resource "null_resource" "wait_for_keycloak" {
 data "kubernetes_secret" "admin_credentials" {
   metadata {
     name      = "keycloak-initial-admin"
-    namespace = var.namespace
+    namespace = "keycloak"
   }
   depends_on = [
     resource.null_resource.wait_for_keycloak,
