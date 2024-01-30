@@ -28,19 +28,19 @@ locals {
         }
         hosts = [
           {
-            host = "keycloak.apps.${var.base_domain}"
+            host = "keycloak.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
             path = "/"
           },
           {
-            host = "keycloak.apps.${var.cluster_name}.${var.base_domain}"
+            host = "keycloak.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
             path = "/"
           },
         ]
         tls = [{
           secretName = "keycloak-tls"
           hosts = [
-            "keycloak.apps.${var.base_domain}",
-            "keycloak.apps.${var.cluster_name}.${var.base_domain}"
+            "keycloak.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
+            "keycloak.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
           ]
         }]
       }

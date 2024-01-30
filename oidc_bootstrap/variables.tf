@@ -12,6 +12,12 @@ variable "base_domain" {
   type        = string
 }
 
+variable "subdomain" {
+  description = "Sub domain of the cluster. Value used for the ingress' URL of the application."
+  type        = string
+  default     = "apps"
+}
+
 variable "cluster_issuer" {
   description = "SSL certificate issuer to use. In this module it is used to conditionally add extra arguments to the OIDC configuration."
   type        = string
