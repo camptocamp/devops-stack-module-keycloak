@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v2.1.0...v3.0.0) (2024-01-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove the ArgoCD namespace variable
+* remove the namespace variable
+* hardcode the release name to remove the destination cluster
+
+### Bug Fixes
+
+* change the default cluster issuer and disabling of TLS verification ([e58d8e8](https://github.com/camptocamp/devops-stack-module-keycloak/commit/e58d8e8271165f252f179228494e150ba35bb785))
+* hardcode the release name to remove the destination cluster ([b395213](https://github.com/camptocamp/devops-stack-module-keycloak/commit/b3952132a37c60080fe67632ed8024b56ba0fe1d))
+* remove the ArgoCD namespace variable ([2443680](https://github.com/camptocamp/devops-stack-module-keycloak/commit/2443680d96e972fd9f060fe04051ad5b18ec9381))
+* remove the namespace variable ([a434bb1](https://github.com/camptocamp/devops-stack-module-keycloak/commit/a434bb185f2a1c7a4a063801555f15df730ea377))
+
 ## [2.1.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v2.0.1...v2.1.0) (2023-10-19)
 
 

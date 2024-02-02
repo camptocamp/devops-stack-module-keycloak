@@ -13,7 +13,7 @@ resource "argocd_project" "this" {
 
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "keycloak-${var.destination_cluster}" : "keycloak"
-    namespace = var.argocd_namespace
+    namespace = "argocd"
   }
 
   spec {
@@ -24,7 +24,7 @@ resource "argocd_project" "this" {
 
     destination {
       name      = var.destination_cluster
-      namespace = var.namespace
+      namespace = "keycloak"
     }
 
     orphaned_resources {
@@ -45,7 +45,7 @@ data "utils_deep_merge_yaml" "values" {
 resource "argocd_application" "operator" {
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "keycloak-operator-${var.destination_cluster}" : "keycloak-operator"
-    namespace = var.argocd_namespace
+    namespace = "argocd"
     labels = merge({
       "application" = "keycloak-operator"
       "cluster"     = var.destination_cluster
@@ -61,11 +61,14 @@ resource "argocd_application" "operator" {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-keycloak.git"
       path            = "charts/keycloak-operator"
       target_revision = var.target_revision
+      helm {
+        release_name = "keycloak-operator"
+      }
     }
 
     destination {
       name      = var.destination_cluster
-      namespace = var.namespace
+      namespace = "keycloak"
     }
 
     sync_policy {
@@ -101,7 +104,7 @@ resource "argocd_application" "operator" {
 resource "argocd_application" "this" {
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "keycloak-${var.destination_cluster}" : "keycloak"
-    namespace = var.argocd_namespace
+    namespace = "argocd"
     labels = merge({
       "application" = "keycloak"
       "cluster"     = var.destination_cluster
@@ -123,13 +126,14 @@ resource "argocd_application" "this" {
       path            = "charts/keycloak"
       target_revision = var.target_revision
       helm {
-        values = data.utils_deep_merge_yaml.values.output
+        release_name = "keycloak"
+        values       = data.utils_deep_merge_yaml.values.output
       }
     }
 
     destination {
       name      = var.destination_cluster
-      namespace = var.namespace
+      namespace = "keycloak"
     }
 
     sync_policy {
@@ -179,7 +183,7 @@ resource "null_resource" "wait_for_keycloak" {
 data "kubernetes_secret" "admin_credentials" {
   metadata {
     name      = "keycloak-initial-admin"
-    namespace = var.namespace
+    namespace = "keycloak"
   }
   depends_on = [
     resource.null_resource.wait_for_keycloak,
