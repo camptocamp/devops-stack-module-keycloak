@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.1.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v3.0.0...v3.1.0) (2024-02-23)
+
+
+### Features
+
+* add a subdomain variable ([fa10461](https://github.com/camptocamp/devops-stack-module-keycloak/commit/fa1046124e30684155a62d3863b6bbaad8a38672))
+
+
+### Bug Fixes
+
+* also make the oidc_bootstrap's subdomain variable nullable ([18f9435](https://github.com/camptocamp/devops-stack-module-keycloak/commit/18f94356c2b17dd301c6030a6e34e82a183b6948))
+* make subdomain variable non-nullable ([7fa7e35](https://github.com/camptocamp/devops-stack-module-keycloak/commit/7fa7e3570f581f507982e87832952e2a0e147ed2))
+* remove annotation for the redirection middleware ([ab0171c](https://github.com/camptocamp/devops-stack-module-keycloak/commit/ab0171cdd29e16fb50bd6fd05ef3c62ebf4e8d93))
+
 ## [3.0.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v2.1.0...v3.0.0) (2024-01-19)
 
 
