@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v3.1.0...v3.1.1) (2024-03-01)
+
+
+### Bug Fixes
+
+* remove legacy ingress annotations ([#33](https://github.com/camptocamp/devops-stack-module-keycloak/issues/33)) ([ede4ddb](https://github.com/camptocamp/devops-stack-module-keycloak/commit/ede4ddbc27f1f6cb4200efc7cc76183046b3252d))
+
 ## [3.1.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v3.0.0...v3.1.0) (2024-02-23)
 
 
