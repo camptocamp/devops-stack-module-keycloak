@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v3.1.1...v4.0.0) (2024-10-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* point the Argo CD provider to the new repository ([#35](https://github.com/camptocamp/devops-stack-module-keycloak/issues/35))
+
+### Features
+
+* point the Argo CD provider to the new repository ([#35](https://github.com/camptocamp/devops-stack-module-keycloak/issues/35)) ([e80e60a](https://github.com/camptocamp/devops-stack-module-keycloak/commit/e80e60a0a6f665ea7f45f49f547ac918cba0fecb))
+
 ## [3.1.1](https://github.com/camptocamp/devops-stack-module-keycloak/compare/v3.1.0...v3.1.1) (2024-03-01)
 
 
