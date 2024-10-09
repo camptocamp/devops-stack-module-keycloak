@@ -163,9 +163,9 @@ The following providers are used by this module:
 
 - [[provider_null]] <<provider_null,null>> (>= 3)
 
-- [[provider_keycloak]] <<provider_keycloak,keycloak>> (>= 4)
-
 - [[provider_random]] <<provider_random,random>> (>= 3)
+
+- [[provider_keycloak]] <<provider_keycloak,keycloak>> (>= 4)
 
 === Resources
 
@@ -310,9 +310,9 @@ Description: Map containing the credentials of each created user.
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
+|[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_keycloak]] <<provider_keycloak,keycloak>> |>= 4
 |[[provider_random]] <<provider_random,random>> |>= 3
-|[[provider_null]] <<provider_null,null>> |>= 3
 |===
 
 = Resources
